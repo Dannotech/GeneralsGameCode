@@ -2655,6 +2655,7 @@ static void calcHeights(const Region3D& world, Real cellSize, Int x, Int y, Real
 //-----------------------------------------------------------------------------
 void PartitionManager::init()
 {
+	DEJA_CONTEXT("PartitionManager::init");
 	m_cellSize = TheGlobalData->m_partitionCellSize;
 	if (m_cellSize < 1.0)
 		m_cellSize = 1.0;

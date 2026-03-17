@@ -1117,6 +1117,7 @@ void TerrainLogic::update()
 //-------------------------------------------------------------------------------------------------
 void TerrainLogic::newMap( Bool saveGame )
 {
+	DEJA_CONTEXT("TerrainLogic::newMap");
 
 	// Set waypoint's z value, now that the height map is loaded.
 	for( Waypoint *way = m_waypointListHead; way; way = way->getNext() )
@@ -1245,6 +1246,7 @@ look at some data rather than running a game, so don't pass this load to the cli
 //-------------------------------------------------------------------------------------------------
 Bool TerrainLogic::loadMap( AsciiString filename, Bool query )
 {
+	DEJA_CONTEXT("TerrainLogic::loadMap");
 
 	// sanity
 	if( filename.isEmpty() )

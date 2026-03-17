@@ -91,6 +91,7 @@ static ShaderClass PlayerColorShader(SC_PLAYER_COLOR);
 //=============================================================================
 RTS3DScene::RTS3DScene()
 {
+  DEJA_CONTEXT("RTS3DScene::RTS3DScene");
 	setName("RTS3DScene");
 	m_drawTerrainOnly = false;
 	m_numGlobalLights=0;
@@ -250,6 +251,7 @@ intersection tests.  Maybe truncate the ray to terrain length before using it?
 */
 void RTS3DScene::flagOccludedObjects(CameraClass * camera)
 {
+	DEJA_CONTEXT("RTS3DScene::flagOccludedObjects");
 	Vector3 camPosition=camera->Get_Position();
 
 	//Find which objects are actually occluded
@@ -323,6 +325,7 @@ void RTS3DScene::flagOccludedObjects(CameraClass * camera)
 //=============================================================================
 Bool RTS3DScene::castRay(RayCollisionTestClass & raytest, Bool testAll, Int collisionType)
 {
+	DEJA_CONTEXT("RTS3DScene::castRay");
 // this shouldn't be necessary here, and would be an undesirable performance hit.
 // if you ever add or modify code here, it MIGHT become necessary... so do so with caution. (srj)
 //#ifdef DIRTY_CONDITION_FLAGS
@@ -396,6 +399,7 @@ Bool RTS3DScene::castRay(RayCollisionTestClass & raytest, Bool testAll, Int coll
 //=============================================================================
 void RTS3DScene::Visibility_Check(CameraClass * camera)
 {
+	DEJA_CONTEXT("RTS3DScene::Visibility_Check");
 #ifdef DIRTY_CONDITION_FLAGS
 	StDrawableDirtyStuffLocker lockDirtyStuff;
 #endif
@@ -544,6 +548,7 @@ void RTS3DScene::Visibility_Check(CameraClass * camera)
 //=============================================================================
 void RTS3DScene::renderSpecificDrawables(RenderInfoClass &rinfo, Int numDrawable, Drawable **theDrawables)
 {
+	DEJA_CONTEXT("RTS3DScene::renderSpecificDrawables");
 #ifdef DIRTY_CONDITION_FLAGS
 	StDrawableDirtyStuffLocker lockDirtyStuff;
 #endif
@@ -583,6 +588,7 @@ void RTS3DScene::renderSpecificDrawables(RenderInfoClass &rinfo, Int numDrawable
 //=============================================================================
 void RTS3DScene::renderOneObject(RenderInfoClass &rinfo, RenderObjClass *robj, Int localPlayerIndex)
 {
+  DEJA_CONTEXT("RTS3DScene::renderOneObject");
 	Drawable *draw = nullptr;
 	DrawableInfo *drawInfo = nullptr;
 	Bool drawableHidden=FALSE;
@@ -846,6 +852,7 @@ void RTS3DScene::renderOneObject(RenderInfoClass &rinfo, RenderObjClass *robj, I
 /**Draw everything that was submitted from this scene*/
 void RTS3DScene::Flush(RenderInfoClass & rinfo)
 {
+  DEJA_CONTEXT("RTS3DScene::Flush");
 	// TheSuperHackers @bugfix Now always prepares shadows to guarantee correct state before doing any
 	// shadow draw calls. Originally just drawing shadows for trees would not properly prepare shadows.
 	PrepareShadows();
@@ -895,6 +902,7 @@ void RTS3DScene::Flush(RenderInfoClass & rinfo)
 objects and most generic map objects that are not lit by dynamic lights.*/
 void RTS3DScene::updateFixedLightEnvironments(RenderInfoClass & rinfo)
 {
+  DEJA_CONTEXT("RTS3DScene::updateFixedLightEnvironments");
 	//Figure out how dimly lit fogged objects should be compared to fully lit.
 	Real foggedLightFrac = (Real)TheGlobalData->m_fogAlpha/(Real)TheGlobalData->m_clearAlpha;
 	Real infantryLightScale;
@@ -945,6 +953,7 @@ void RTS3DScene::updateFixedLightEnvironments(RenderInfoClass & rinfo)
 to render occluded objects using the color of the player*/
 void RTS3DScene::updatePlayerColorPasses()
 {
+	DEJA_CONTEXT("RTS3DScene::updatePlayerColorPasses");
 #ifdef USE_NON_STENCIL_OCCLUSION
 	Vector3 hsv,rgb;
 
@@ -972,6 +981,7 @@ void RTS3DScene::updatePlayerColorPasses()
 //DECLARE_PERF_TIMER(NonTerrainRender)
 void RTS3DScene::Render(RenderInfoClass & rinfo)
 {
+	DEJA_CONTEXT("RTS3DScene::Render");
 	//USE_PERF_TIMER(NonTerrainRender)
 	DX8Wrapper::Set_Fog(FogEnabled, FogColor, FogStart, FogEnd);
 
@@ -1103,6 +1113,7 @@ void RTS3DScene::Render(RenderInfoClass & rinfo)
 //=============================================================================
 void RTS3DScene::Customized_Render( RenderInfoClass &rinfo )
 {
+	DEJA_CONTEXT("RTS3DScene::Customized_Render");
 #ifdef DIRTY_CONDITION_FLAGS
 	StDrawableDirtyStuffLocker lockDirtyStuff;
 #endif
@@ -1244,6 +1255,7 @@ Int playerIndexToColorIndex(Int playerIndex)
 stencil mask*/
 void renderStenciledPlayerColor( UnsignedInt color, UnsignedInt stencilRef, Bool clear=FALSE)
 {
+	DEJA_CONTEXT("renderStenciledPlayerColor");
 	struct _TRANSLITVERTEX {
 	    Vector4 p;
 		DWORD color;   // diffuse color
@@ -1344,6 +1356,7 @@ void renderStenciledPlayerColor( UnsignedInt color, UnsignedInt stencilRef, Bool
 #define MAX_VISIBLE_OCCLUDED_PLAYER_OBJECTS	512 //maximum number of occluded objects permitted per player
 void RTS3DScene::flushOccludedObjectsIntoStencil(RenderInfoClass & rinfo)
 {
+	DEJA_CONTEXT("RTS3DScene::flushOccludedObjectsIntoStencil");
 	RenderObjClass *robj;
 	Drawable *draw;
 	RenderObjClass *playerObjects[MAX_PLAYER_COUNT][MAX_VISIBLE_OCCLUDED_PLAYER_OBJECTS];
@@ -1567,6 +1580,7 @@ void RTS3DScene::flushOccludedObjectsIntoStencil(RenderInfoClass & rinfo)
 /*Version which does not require stencil buffer*/
 void RTS3DScene::flushOccludedObjects(RenderInfoClass & rinfo)
 {
+	DEJA_CONTEXT("RTS3DScene::flushOccludedObjects");
 	RenderObjClass *robj;
 	Drawable *draw;
 
@@ -1639,6 +1653,7 @@ void RTS3DScene::flushOccludedObjects(RenderInfoClass & rinfo)
 
 void RTS3DScene::flushTranslucentObjects(RenderInfoClass & rinfo)
 {
+	DEJA_CONTEXT("RTS3DScene::flushTranslucentObjects");
 	RenderObjClass *robj;
 	Drawable *draw;
 
@@ -1710,6 +1725,7 @@ void RTS3DScene::addDynamicLight(W3DDynamicLight * obj)
 //=============================================================================
 W3DDynamicLight * RTS3DScene::getADynamicLight()
 {
+  DEJA_CONTEXT("RTS3DScene::getADynamicLight");
 	RefRenderObjListIterator dynaLightIt(&m_dynamicLightList);
 	W3DDynamicLight *pLight;
 	for (dynaLightIt.First(); !dynaLightIt.Is_Done(); dynaLightIt.Next())
@@ -1744,6 +1760,7 @@ void RTS3DScene::removeDynamicLight(W3DDynamicLight * obj)
 //=============================================================================
 void RTS3DScene::doRender( CameraClass * cam )
 {
+	DEJA_CONTEXT("RTS3DScene::doRender");
 	m_camera = cam;
 	DRAW();
 	m_camera = nullptr;

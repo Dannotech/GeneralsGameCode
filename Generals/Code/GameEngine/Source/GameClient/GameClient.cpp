@@ -1036,6 +1036,7 @@ void GameClient::allocateShadows()
 //-------------------------------------------------------------------------------------------------
 void GameClient::preloadAssets( TimeOfDay timeOfDay )
 {
+	DEJA_CONTEXT("GameClient::preloadAssets");
 
 	MEMORYSTATUS before, after;
 	GlobalMemoryStatus(&before);

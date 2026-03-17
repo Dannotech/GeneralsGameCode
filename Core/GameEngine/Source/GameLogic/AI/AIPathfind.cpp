@@ -4640,6 +4640,7 @@ void Pathfinder::classifyMapCell( Int i, Int j , PathfindCell *cell)
  */
 void Pathfinder::newMap()
 {
+	DEJA_CONTEXT("Pathfinder::newMap");
 	m_wallHeight = TheAI->getAiData()->m_wallHeight; // may be updated by map.ini.
 	Region3D terrainExtent;
 	TheTerrainLogic->getMaximumPathfindExtent( &terrainExtent );

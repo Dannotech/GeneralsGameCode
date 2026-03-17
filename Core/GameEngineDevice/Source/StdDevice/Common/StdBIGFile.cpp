@@ -33,6 +33,7 @@
 #include "Common/GameMemory.h"
 #include "Common/PerfTimer.h"
 #include "StdDevice/Common/StdBIGFile.h"
+#include "DejaLib.h"
 
 //============================================================================
 // StdBIGFile::StdBIGFile
@@ -60,6 +61,7 @@ StdBIGFile::~StdBIGFile()
 
 File* StdBIGFile::openFile( const Char *filename, Int access )
 {
+  DEJA_CONTEXT("StdBIGFile::openFile");
 	const ArchivedFileInfo *fileInfo = getArchivedFileInfo(AsciiString(filename));
 
 	if (fileInfo == nullptr) {
@@ -151,6 +153,7 @@ void StdBIGFile::close()
 
 Bool StdBIGFile::getFileInfo(const AsciiString& filename, FileInfo *fileInfo) const
 {
+	DEJA_CONTEXT("StdBIGFile::getFileInfo");
 	const ArchivedFileInfo *tempFileInfo = getArchivedFileInfo(filename);
 
 	if (tempFileInfo == nullptr) {

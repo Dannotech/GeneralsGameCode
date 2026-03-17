@@ -124,6 +124,7 @@ void PlayerList::reset()
 //-----------------------------------------------------------------------------
 void PlayerList::newGame()
 {
+	DEJA_CONTEXT("PlayerList::newGame");
 	Int i;
 
 	DEBUG_ASSERTCRASH(this != nullptr, ("null this"));

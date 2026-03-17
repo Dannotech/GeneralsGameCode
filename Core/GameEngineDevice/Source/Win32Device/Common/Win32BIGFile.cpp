@@ -32,6 +32,7 @@
 #include "Common/StreamingArchiveFile.h"
 #include "Common/GameMemory.h"
 #include "Common/PerfTimer.h"
+#include "DejaLib.h"
 #include "Win32Device/Common/Win32BIGFile.h"
 
 //============================================================================
@@ -60,6 +61,7 @@ Win32BIGFile::~Win32BIGFile()
 
 File* Win32BIGFile::openFile( const Char *filename, Int access )
 {
+	DEJA_CONTEXT("Win32BIGFile::openFile");
 	const ArchivedFileInfo *fileInfo = getArchivedFileInfo(AsciiString(filename));
 
 	if (fileInfo == nullptr) {

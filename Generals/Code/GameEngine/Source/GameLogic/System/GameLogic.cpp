@@ -505,6 +505,7 @@ static Object * placeObjectAtPosition(Int slotNum, AsciiString objectTemplateNam
 
 static void placeNetworkBuildingsForPlayer(Int slotNum, const GameSlot *pSlot, Player *pPlayer, const PlayerTemplate *pTemplate)
 {
+	DEJA_CONTEXT("placeNetworkBuildingsForPlayer");
 	Int startPos = pSlot->getStartPos();
 	AsciiString waypointName;
 	waypointName.format("Player_%d_Start", startPos+1); // start pos waypoints are 1-based
@@ -965,6 +966,7 @@ void GameLogic::setGameMode( GameMode mode )
 // ------------------------------------------------------------------------------------------------
 void GameLogic::startNewGame( Bool loadingSaveGame )
 {
+	DEJA_CONTEXT("GameLogic::startNewGame");
 
 	#ifdef DUMP_PERF_STATS
 	__int64 startTime64;
@@ -2095,6 +2097,7 @@ static void findAndSelectCommandCenter(Object *obj, void* alreadyFound)
 // ------------------------------------------------------------------------------------------------
 void GameLogic::loadMapINI( AsciiString mapName )
 {
+	DEJA_CONTEXT("GameLogic::loadMapINI");
 
 	if (!TheMapCache) {
 		// Need the map cache to get the map and user map directories.

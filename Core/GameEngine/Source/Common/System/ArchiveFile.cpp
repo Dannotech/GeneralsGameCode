@@ -96,6 +96,7 @@ ArchiveFile::ArchiveFile()
 
 void ArchiveFile::addFile(const AsciiString& path, const ArchivedFileInfo *fileInfo)
 {
+	DEJA_CONTEXT("ArchiveFile::addFile");
 	DetailedArchivedDirectoryInfo *dirInfo = &m_rootDirectory;
 
 	AsciiString token;
@@ -124,6 +125,7 @@ void ArchiveFile::addFile(const AsciiString& path, const ArchivedFileInfo *fileI
 
 void ArchiveFile::getFileListInDirectory(const AsciiString& currentDirectory, const AsciiString& originalDirectory, const AsciiString& searchName, FilenameList &filenameList, Bool searchSubdirectories) const
 {
+	DEJA_CONTEXT("ArchiveFile::getFileListInDirectory");
 	const DetailedArchivedDirectoryInfo *dirInfo = &m_rootDirectory;
 
 	AsciiString token;
@@ -152,6 +154,7 @@ void ArchiveFile::getFileListInDirectory(const AsciiString& currentDirectory, co
 
 void ArchiveFile::getFileListInDirectory(const DetailedArchivedDirectoryInfo *dirInfo, const AsciiString& currentDirectory, const AsciiString& searchName, FilenameList &filenameList, Bool searchSubdirectories) const
 {
+	DEJA_CONTEXT("ArchiveFile::getFileListInDirectory");
 	DetailedArchivedDirectoryInfoMap::const_iterator diriter = dirInfo->m_directories.begin();
 	while (diriter != dirInfo->m_directories.end()) {
 		const DetailedArchivedDirectoryInfo *tempDirInfo = &(diriter->second);
@@ -194,6 +197,7 @@ void ArchiveFile::attachFile(File *file)
 
 const ArchivedFileInfo * ArchiveFile::getArchivedFileInfo(const AsciiString& filename) const
 {
+	DEJA_CONTEXT("ArchiveFile::getArchivedFileInfo");
 	const DetailedArchivedDirectoryInfo *dirInfo = &m_rootDirectory;
 
 	AsciiString token;

@@ -4712,6 +4712,7 @@ void ScriptEngine::reset()
 //-------------------------------------------------------------------------------------------------
 void ScriptEngine::newMap()
 {
+	DEJA_CONTEXT("ScriptEngine::newMap");
 	m_numCounters = 1;
 	Int i;
 	for (i=0; i<MAX_COUNTERS; i++) {

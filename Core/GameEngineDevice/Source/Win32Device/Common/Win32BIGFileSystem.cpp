@@ -41,6 +41,7 @@
 #include "Win32Device/Common/Win32BIGFile.h"
 #include "Win32Device/Common/Win32BIGFileSystem.h"
 #include "Utility/endian_compat.h"
+#include "DejaLib.h"
 
 
 static const char *BIGFileIdentifier = "BIGF";
@@ -52,6 +53,7 @@ Win32BIGFileSystem::~Win32BIGFileSystem() {
 }
 
 void Win32BIGFileSystem::init() {
+	DEJA_CONTEXT("Win32BIGFileSystem::init");
 	DEBUG_ASSERTCRASH(TheLocalFileSystem != nullptr, ("TheLocalFileSystem must be initialized before TheArchiveFileSystem."));
 	if (TheLocalFileSystem == nullptr) {
 		return;
@@ -80,6 +82,7 @@ void Win32BIGFileSystem::postProcessLoad() {
 }
 
 ArchiveFile * Win32BIGFileSystem::openArchiveFile(const Char *filename) {
+	DEJA_CONTEXT("Win32BIGFileSystem::openArchiveFile");
 	File *fp = TheLocalFileSystem->openFile(filename, File::READ | File::BINARY);
 	AsciiString archiveFileName;
 	archiveFileName = filename;
@@ -182,6 +185,7 @@ ArchiveFile * Win32BIGFileSystem::openArchiveFile(const Char *filename) {
 }
 
 void Win32BIGFileSystem::closeArchiveFile(const Char *filename) {
+	DEJA_CONTEXT("Win32BIGFileSystem::closeArchiveFile");
 	// Need to close the specified big file
 	ArchiveFileMap::iterator it =  m_archiveFileMap.find(filename);
 	if (it == m_archiveFileMap.end()) {
@@ -209,7 +213,7 @@ void Win32BIGFileSystem::closeAllFiles() {
 }
 
 Bool Win32BIGFileSystem::loadBigFilesFromDirectory(AsciiString dir, AsciiString fileMask, Bool overwrite) {
-
+	DEJA_CONTEXT("Win32BIGFileSystem::loadBigFilesFromDirectory");
 	FilenameList filenameList;
 	TheLocalFileSystem->getFileListInDirectory(dir, "", fileMask, filenameList, TRUE);
 

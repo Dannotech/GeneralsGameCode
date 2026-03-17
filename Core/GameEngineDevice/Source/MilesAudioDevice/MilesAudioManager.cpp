@@ -65,6 +65,7 @@
 #include "GameLogic/TerrainLogic.h"
 
 #include "Common/file.h"
+#include "DejaLib.h"
 
 
 enum { INFINITE_LOOP_COUNT = 1000000 };
@@ -3114,6 +3115,7 @@ AudioFileCache::~AudioFileCache()
 //-------------------------------------------------------------------------------------------------
 void *AudioFileCache::openFile( AudioEventRTS *eventToOpenFrom )
 {
+	DEJA_CONTEXT("AudioFileCache::openFile");
 	// Protect the entire openFile function
 	ScopedMutex mut(m_mutex);
 

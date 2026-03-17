@@ -41,6 +41,7 @@
 #include "StdDevice/Common/StdBIGFile.h"
 #include "StdDevice/Common/StdBIGFileSystem.h"
 #include "Utility/endian_compat.h"
+#include "DejaLib.h"
 
 static const char *BIGFileIdentifier = "BIGF";
 
@@ -79,6 +80,7 @@ void StdBIGFileSystem::postProcessLoad() {
 }
 
 ArchiveFile * StdBIGFileSystem::openArchiveFile(const Char *filename) {
+	DEJA_CONTEXT("StdBIGFileSystem::openArchiveFile");
 	File *fp = TheLocalFileSystem->openFile(filename, File::READ | File::BINARY);
 	AsciiString archiveFileName;
 	archiveFileName = filename;
@@ -181,6 +183,7 @@ ArchiveFile * StdBIGFileSystem::openArchiveFile(const Char *filename) {
 }
 
 void StdBIGFileSystem::closeArchiveFile(const Char *filename) {
+	DEJA_CONTEXT("StdBIGFileSystem::closeArchiveFile");
 	// Need to close the specified big file
 	ArchiveFileMap::iterator it =  m_archiveFileMap.find(filename);
 	if (it == m_archiveFileMap.end()) {
@@ -208,7 +211,7 @@ void StdBIGFileSystem::closeAllFiles() {
 }
 
 Bool StdBIGFileSystem::loadBigFilesFromDirectory(AsciiString dir, AsciiString fileMask, Bool overwrite) {
-
+	DEJA_CONTEXT("StdBIGFileSystem::loadBigFilesFromDirectory");
 	FilenameList filenameList;
 	TheLocalFileSystem->getFileListInDirectory(dir, "", fileMask, filenameList, TRUE);
 

@@ -51,6 +51,7 @@
 #include "W3DDevice/GameClient/WorldHeightMap.h"
 #include "W3DDevice/GameClient/TileData.h"
 #include "Common/GlobalData.h"
+#include "DejaLib.h"
 #include "WW3D2/dx8wrapper.h"
 #include "d3dx8tex.h"
 
@@ -95,6 +96,7 @@ TerrainTextureClass::TerrainTextureClass(int height, int width) :
 //=============================================================================
 int TerrainTextureClass::update(WorldHeightMap *htMap)
 {
+	DEJA_CONTEXT("TerrainTextureClass::update");
 	// D3DTexture is our texture;
 
 	IDirect3DSurface8 *surface_level;
@@ -212,6 +214,7 @@ int TerrainTextureClass::update(WorldHeightMap *htMap)
 //=============================================================================
 int TerrainTextureClass::update(WorldHeightMap *htMap)
 {
+	DEJA_CONTEXT("TerrainTextureClass::update");
 	// D3DTexture is our texture;
 
 	IDirect3DSurface8 *surface_level;
@@ -375,6 +378,7 @@ void TerrainTextureClass::setLOD(Int LOD)
 //=============================================================================
 Bool TerrainTextureClass::updateFlat(WorldHeightMap *htMap, Int xCell, Int yCell, Int cellWidth, Int pixelsPerCell)
 {
+	DEJA_CONTEXT("TerrainTextureClass::updateFlat");
 	// D3DTexture is our texture;
 
 	IDirect3DSurface8 *surface_level;
@@ -507,6 +511,7 @@ set up the pipe so that we blend onto the base texture in stage 0.
 //=============================================================================
 void AlphaTerrainTextureClass::Apply(unsigned int stage)
 {
+	DEJA_CONTEXT("AlphaTerrainTextureClass::Apply");
 	// Do the base apply.
 	TextureClass::Apply(stage);
 
@@ -674,6 +679,7 @@ yet another set of uv coordinates.
 //=============================================================================
 void LightMapTerrainTextureClass::Apply(unsigned int stage)
 {
+	DEJA_CONTEXT("LightMapTerrainTextureClass::Apply");
 	TextureClass::Apply(stage);
 #if 0 // obsolete [4/1/2003]
 	// Do the base apply.
@@ -769,6 +775,7 @@ int AlphaEdgeTextureClass::update256(WorldHeightMap *htMap)
 
 int AlphaEdgeTextureClass::update(WorldHeightMap *htMap)
 {
+	DEJA_CONTEXT("AlphaEdgeTextureClass::update");
 	// D3DTexture is our texture;
 
 	IDirect3DSurface8 *surface_level;
@@ -843,6 +850,7 @@ int AlphaEdgeTextureClass::update(WorldHeightMap *htMap)
 
 void AlphaEdgeTextureClass::Apply(unsigned int stage)
 {
+	DEJA_CONTEXT("AlphaEdgeTextureClass::Apply");
 	// Do the base apply.
 	TextureClass::Apply(stage);
 #if 0 // obsolete [4/1/2003]
@@ -1105,6 +1113,7 @@ terrain mesh.
 //=============================================================================
 void ScorchTextureClass::Apply(unsigned int stage)
 {
+	DEJA_CONTEXT("ScorchTextureClass::Apply");
 	// Do the base apply.
 	TextureClass::Apply(stage);
 	// Setup bilinear or trilinear filtering as specified in global data.

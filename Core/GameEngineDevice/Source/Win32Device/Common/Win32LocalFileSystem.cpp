@@ -33,6 +33,7 @@
 #include "Win32Device/Common/Win32LocalFileSystem.h"
 #include "Win32Device/Common/Win32LocalFile.h"
 #include <io.h>
+#include "DejaLib.h"
 
 Win32LocalFileSystem::Win32LocalFileSystem() : LocalFileSystem()
 {
@@ -44,6 +45,7 @@ Win32LocalFileSystem::~Win32LocalFileSystem() {
 //DECLARE_PERF_TIMER(Win32LocalFileSystem_openFile)
 File * Win32LocalFileSystem::openFile(const Char *filename, Int access, size_t bufferSize)
 {
+	DEJA_CONTEXT("Win32LocalFileSystem::openFile");
 	//USE_PERF_TIMER(Win32LocalFileSystem_openFile)
 
 	// sanity check
@@ -115,6 +117,7 @@ void Win32LocalFileSystem::reset()
 //DECLARE_PERF_TIMER(Win32LocalFileSystem_doesFileExist)
 Bool Win32LocalFileSystem::doesFileExist(const Char *filename) const
 {
+	DEJA_CONTEXT("Win32LocalFileSystem::doesFileExist");
 	//USE_PERF_TIMER(Win32LocalFileSystem_doesFileExist)
 	if (_access(filename, 0) == 0) {
 		return TRUE;
@@ -124,6 +127,7 @@ Bool Win32LocalFileSystem::doesFileExist(const Char *filename) const
 
 void Win32LocalFileSystem::getFileListInDirectory(const AsciiString& currentDirectory, const AsciiString& originalDirectory, const AsciiString& searchName, FilenameList & filenameList, Bool searchSubdirectories) const
 {
+	DEJA_CONTEXT("Win32LocalFileSystem::getFileListInDirectory");
 	HANDLE fileHandle = nullptr;
 	WIN32_FIND_DATA findData;
 
@@ -186,6 +190,7 @@ void Win32LocalFileSystem::getFileListInDirectory(const AsciiString& currentDire
 
 Bool Win32LocalFileSystem::getFileInfo(const AsciiString& filename, FileInfo *fileInfo) const
 {
+	DEJA_CONTEXT("Win32LocalFileSystem::getFileInfo");
 	WIN32_FIND_DATA findData;
 	HANDLE findHandle = nullptr;
 	findHandle = FindFirstFile(filename.str(), &findData);
@@ -206,6 +211,7 @@ Bool Win32LocalFileSystem::getFileInfo(const AsciiString& filename, FileInfo *fi
 
 Bool Win32LocalFileSystem::createDirectory(AsciiString directory)
 {
+	DEJA_CONTEXT("Win32LocalFileSystem::createDirectory");
 	if ((!directory.isEmpty()) && (directory.getLength() < _MAX_DIR)) {
 		return (CreateDirectory(directory.str(), nullptr) != 0);
 	}
@@ -214,6 +220,7 @@ Bool Win32LocalFileSystem::createDirectory(AsciiString directory)
 
 AsciiString Win32LocalFileSystem::normalizePath(const AsciiString& filePath) const
 {
+	DEJA_CONTEXT("");
 	DWORD retval = GetFullPathNameA(filePath.str(), 0, nullptr, nullptr);
 	if (retval == 0)
 	{

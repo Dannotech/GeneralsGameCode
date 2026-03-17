@@ -1121,6 +1121,7 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 #endif
 
 	setLoadingMap( TRUE );
+	DEJA_BOOKMARK("Loading", "Load Begin: %s", TheGlobalData->m_mapName.str());
 
 	if( loadingSaveGame == FALSE )
 	{
@@ -2351,6 +2352,7 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 	//ReAllows quit menu to work during loading scene
 	//setGameLoading(FALSE);
 	setLoadingMap( FALSE );
+	DEJA_BOOKMARK("Loading", "Load End: %s", TheGlobalData->m_mapName.str());
 
 #ifdef DUMP_PERF_STATS
 	GetPrecisionTimer(&endTime64);

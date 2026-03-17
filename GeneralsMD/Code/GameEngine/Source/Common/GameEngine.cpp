@@ -163,6 +163,7 @@ void initSubsystem(
 	const char* path1 = nullptr,
 	const char* path2 = nullptr)
 {
+	DEJA_CONTEXT("initSubsystem");
 	sysref = sys;
 	TheSubsystemList->initSubsystem(sys, path1, path2, pXfer, name);
 }
@@ -344,6 +345,7 @@ Bool GameEngine::isGameHalted()
  */
 void GameEngine::init()
 {
+	DEJA_CONTEXT("GameEngine::init");
 	try {
 		//create an INI object to use for loading stuff
 		INI ini;
@@ -939,6 +941,7 @@ extern HWND ApplicationHWnd;
  */
 void GameEngine::execute()
 {
+	DEJA_CONTEXT("GameEngine::execute");
 #if defined(RTS_DEBUG)
 	DWORD startTime = timeGetTime() / 1000;
 #endif

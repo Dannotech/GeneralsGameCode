@@ -153,6 +153,7 @@ void SubsystemInterfaceList::removeSubsystem(SubsystemInterface* sys)
 //-----------------------------------------------------------------------------
 void SubsystemInterfaceList::initSubsystem(SubsystemInterface* sys, const char* path1, const char* path2, Xfer *pXfer, AsciiString name)
 {
+	DEJA_CONTEXT("SubsystemInterfaceList::initSubsystem");
 	sys->setName(name);
 	sys->init();
 

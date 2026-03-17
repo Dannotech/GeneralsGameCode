@@ -42,6 +42,7 @@
 #include <stdlib.h>
 
 // USER INCLUDES //////////////////////////////////////////////////////////////
+#include "DejaLib.h"
 #include "Lib/BaseType.h"
 #include "Common/Debug.h"
 #include "Common/GameMemory.h"
@@ -117,6 +118,7 @@ static SubsystemInterfaceList _TheSubsystemList;
 template<class SUBSYSTEM>
 void initSubsystem(SUBSYSTEM*& sysref, SUBSYSTEM* sys, const char* path1 = nullptr, const char* path2 = nullptr)
 {
+	DEJA_CONTEXT("initSubsystem");
 	sysref = sys;
 	_TheSubsystemList.initSubsystem(sys, path1, path2, nullptr);
 }

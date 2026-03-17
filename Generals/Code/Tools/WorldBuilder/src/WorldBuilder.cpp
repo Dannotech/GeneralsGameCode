@@ -20,6 +20,7 @@
 //
 
 #include "StdAfx.h"
+#include "DejaLib.h"
 #include "WorldBuilder.h"
 #include "MainFrm.h"
 #include "OpenMap.h"
@@ -87,6 +88,7 @@ static SubsystemInterfaceList TheSubsystemListRecord;
 template<class SUBSYSTEM>
 void initSubsystem(SUBSYSTEM*& sysref, SUBSYSTEM* sys, const char* path1 = nullptr, const char* path2 = nullptr)
 {
+	DEJA_CONTEXT("initSubsystem");
 	sysref = sys;
 	TheSubsystemListRecord.initSubsystem(sys, path1, path2, nullptr);
 }

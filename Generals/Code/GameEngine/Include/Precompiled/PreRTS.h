@@ -128,6 +128,10 @@ class STLSpecialAlloc;
 #include "Common/Thing.h"
 #include "Common/UnicodeString.h"
 
+// DejaInsight scoped profiling macros (DEJA_CONTEXT, DEJA_TRACE, etc.)
+// Define DEJA_DISABLED before this include to compile out all Deja instrumentation.
+#include "DejaLib.h"
+
 #if defined(__GNUC__) && defined(_WIN32)
     #pragma GCC diagnostic pop
 #endif

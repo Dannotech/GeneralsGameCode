@@ -1095,6 +1095,10 @@ target_link_libraries(g_gameengine PUBLIC
     g_wwvegas
 )
 
+if(TARGET deja_insight)
+    target_link_libraries(g_gameengine PUBLIC deja_insight)
+endif()
+
 target_precompile_headers(g_gameengine PRIVATE
     [["Utility/CppMacros.h"]] # Must be first, to be removed when abandoning VC6
     Include/Precompiled/PreRTS.h

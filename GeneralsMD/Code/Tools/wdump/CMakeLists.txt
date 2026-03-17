@@ -29,4 +29,7 @@ target_link_libraries(z_wdump PRIVATE
 if(WIN32 OR "${CMAKE_SYSTEM}" MATCHES "Windows")
     target_compile_definitions(z_wdump PRIVATE _AFXDLL)
     target_sources(z_wdump PRIVATE wdump.rc)
+    if(MSVC)
+        set_target_properties(z_wdump PROPERTIES VS_GLOBAL_UseOfMfc "Dynamic")
+    endif()
 endif()

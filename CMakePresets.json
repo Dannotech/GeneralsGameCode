@@ -7,6 +7,31 @@
     },
     "configurePresets": [
         {
+            "name": "vs2026",
+            "displayName": "Windows 32bit Visual Studio 2026",
+            "generator": "Visual Studio 18 2026",
+            "hidden": false,
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "architecture": {
+                "value": "Win32",
+                "strategy": "set"
+            },
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_MSVC_DEBUG_INFORMATION_FORMAT": "$<$<CONFIG:Release,Debug,RelWithDebInfo>:Embedded>",
+                "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL",
+                "RTS_FLAGS": "/W3"
+            }
+        },
+        {
+            "name": "vs2026-debug",
+            "displayName": "Windows 32bit Visual Studio 2026 Debug",
+            "inherits": "vs2026",
+            "cacheVariables": {
+                "RTS_BUILD_OPTION_DEBUG": "ON"
+            }
+        },
+        {
             "name": "vc6",
             "displayName": "Windows 32bit VC6 Release",
             "generator": "Ninja",
@@ -194,6 +219,20 @@
         }
     ],
     "buildPresets": [
+        {
+            "name": "vs2026",
+            "configurePreset": "vs2026",
+            "displayName": "Build Windows 32bit VS2026 Release",
+            "description": "Build Windows 32bit VS2026 Release",
+            "configuration": "Release"
+        },
+        {
+            "name": "vs2026-debug",
+            "configurePreset": "vs2026-debug",
+            "displayName": "Build Windows 32bit VS2026 Debug",
+            "description": "Build Windows 32bit VS2026 Debug",
+            "configuration": "Debug"
+        },
         {
             "name": "vc6",
             "configurePreset": "vc6",

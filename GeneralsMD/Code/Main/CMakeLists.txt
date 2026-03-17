@@ -80,3 +80,21 @@ endif()
 if(MINGW AND COMMAND add_debug_strip_target)
     add_debug_strip_target(z_generals)
 endif()
+
+# Post-build: copy exe to retail install directory for quick iteration.
+# Set ZEROHOUR_GAME_DIR to the root of your Zero Hour installation to enable this.
+set(_post_build_script "${CMAKE_CURRENT_BINARY_DIR}/post_build_copy.cmake")
+file(WRITE "${_post_build_script}" [=[
+if(DEFINED ENV{ZEROHOUR_GAME_DIR})
+    cmake_path(CONVERT "$ENV{ZEROHOUR_GAME_DIR}" TO_CMAKE_PATH_LIST _dest NORMALIZE)
+    get_filename_component(_name "${EXE}" NAME)
+    file(COPY_FILE "${EXE}" "${_dest}/${_name}" ONLY_IF_DIFFERENT)
+    message(STATUS "[z_generals] Copied ${EXE} -> ${_dest}/${_name}")
+else()
+    message(STATUS "[z_generals] Tip: Set the ZEROHOUR_GAME_DIR environment variable to the root of your Zero Hour installation directory to auto-copy the executable after each build.")
+endif()
+]=])
+add_custom_command(TARGET z_generals POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -DEXE=$<TARGET_FILE:z_generals> -P "${_post_build_script}"
+    VERBATIM
+)

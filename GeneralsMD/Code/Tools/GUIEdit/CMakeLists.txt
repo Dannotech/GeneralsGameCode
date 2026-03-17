@@ -64,4 +64,7 @@ if(WIN32 OR "${CMAKE_SYSTEM}" MATCHES "Windows")
     target_link_options(z_guiedit PRIVATE /NODEFAULTLIB:libci.lib /NODEFAULTLIB:libc.lib)
 
     target_sources(z_guiedit PRIVATE Resource/GUIEdit.rc)
+    if(MSVC)
+        set_target_properties(z_guiedit PROPERTIES VS_GLOBAL_UseOfMfc "Static")
+    endif()
 endif()

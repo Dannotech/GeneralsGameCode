@@ -7,7 +7,7 @@
 //
 // Generated from the TEXTINCLUDE 2 resource.
 //
-#include "afxres.h"
+#include <winres.h>
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
@@ -28,8 +28,8 @@ LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_VERSION_STRING      "ƒo[ƒWƒ‡ƒ“ %s"
-    IDS_CANT_FIND_FILE      "%s ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½"
+    IDS_VERSION_STRING      "ï¿½oï¿½[ï¿½Wï¿½ï¿½ï¿½ï¿½ %s"
+    IDS_CANT_FIND_FILE      "%s ï¿½ï¿½ï¿½ï¿½ï¿½Â‚ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½"
 END
 
 #endif    // Japanese resources
@@ -52,8 +52,8 @@ LANGUAGE LANG_KOREAN, SUBLANG_DEFAULT
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_VERSION_STRING      "Korean ©öoAu %s."
-    IDS_CANT_FIND_FILE      "%s (A¡í)¢¬| A¡ÌA¡í ¨ùo ¨ú©ªA¨ö."
+    IDS_VERSION_STRING      "Korean ï¿½ï¿½oAu %s."
+    IDS_CANT_FIND_FILE      "%s (Aï¿½ï¿½)ï¿½ï¿½| Aï¿½ï¿½Aï¿½ï¿½ ï¿½ï¿½o ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½."
 END
 
 #endif    // Korean resources
@@ -76,8 +76,8 @@ LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_VERSION_STRING      "Chinese ac¢D? %s!C"
-    IDS_CANT_FIND_FILE      "¡±a?¢G¡Li %s!C"
+    IDS_VERSION_STRING      "Chinese acï¿½D? %s!C"
+    IDS_CANT_FIND_FILE      "ï¿½ï¿½a?ï¿½Gï¿½Li %s!C"
 END
 
 #endif    // Chinese (Taiwan) resources
@@ -234,7 +234,7 @@ BEGIN
             VALUE "FileDescription", "Westwood Autorun\0"
             VALUE "FileVersion", "1.00\0"
             VALUE "InternalName", "Autorun\0"
-            VALUE "LegalCopyright", "Copyright © Westwood Studios 2001\0"
+            VALUE "LegalCopyright", "Copyright ï¿½ Westwood Studios 2001\0"
             VALUE "OriginalFilename", "Autorun.exe\0"
             VALUE "ProductName", "Command & Conquer Renegade\0"
             VALUE "ProductVersion", "1, 0, 0, 0\0"

@@ -752,6 +752,7 @@ void GameClient::update()
 	}
 
 	{
+		DEJA_CONTEXT("GameClient::draw");
 		USE_PERF_TIMER(GameClient_draw)
 
 	// redraw all views, update the GUI

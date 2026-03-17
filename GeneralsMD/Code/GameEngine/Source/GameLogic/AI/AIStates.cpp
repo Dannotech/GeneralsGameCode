@@ -1305,6 +1305,7 @@ void AIIdleState::loadPostProcess()
 DECLARE_PERF_TIMER(AIIdleState)
 StateReturnType AIIdleState::onEnter()
 {
+	DEJA_CONTEXT("AIIdleState::onEnter");
 	USE_PERF_TIMER(AIIdleState)
 	Object *obj = getMachineOwner();
 	AIUpdateInterface *ai = obj->getAI();
@@ -1384,6 +1385,7 @@ void AIIdleState::doInitIdleState()
  */
 StateReturnType AIIdleState::update()
 {
+	DEJA_CONTEXT("AIIdleState::update");
 	USE_PERF_TIMER(AIIdleState)
 
 	doInitIdleState();
@@ -5505,6 +5507,7 @@ void AIAttackState::notifyNewVictimChosen(Object* victim)
 DECLARE_PERF_TIMER(AIAttackState)
 StateReturnType AIAttackState::onEnter()
 {
+	DEJA_CONTEXT("AIAttackState::onEnter");
 	USE_PERF_TIMER(AIAttackState)
 	//CRCDEBUG_LOG(("AIAttackState::onEnter() - start for object %d", getMachineOwner()->getID()));
 	Object* source = getMachineOwner();
@@ -5589,6 +5592,7 @@ StateReturnType AIAttackState::onEnter()
 
 StateReturnType AIAttackState::update()
 {
+	DEJA_CONTEXT("AIAttackState::update");
 	USE_PERF_TIMER(AIAttackState)
 	// if we've met the conditions specified by m_attackParameters, we consider ourselves "successful."
 	if (m_attackParameters && m_attackParameters->shouldExit(getMachine()))
@@ -5703,6 +5707,7 @@ StateReturnType AIAttackState::update()
 //----------------------------------------------------------------------------------------------------------
 void AIAttackState::onExit( StateExitType status )
 {
+	DEJA_CONTEXT("AIAttackState::onExit");
 	USE_PERF_TIMER(AIAttackState)
 	// nope, don't do this, since we may well still have it targeted
 	// even though we're leaving this state. turn it off when we

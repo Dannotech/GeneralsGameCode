@@ -52,6 +52,7 @@
 #include "Common/GameUtility.h"
 #include "Common/Geometry.h"
 #include "Common/PerfTimer.h"
+#include "DejaLib.h"
 #include "Common/Player.h"
 #include "Common/PlayerList.h"
 #include "WW3D2/camera.h"
@@ -321,6 +322,7 @@ DECLARE_PERF_TIMER(Prop_Render)
 //=============================================================================
 void W3DPropBuffer::drawProps(RenderInfoClass &rinfo)
 {
+	DEJA_CONTEXT("W3DPropBuffer::drawProps");
 	USE_PERF_TIMER(Prop_Render)
 
 	Int i;

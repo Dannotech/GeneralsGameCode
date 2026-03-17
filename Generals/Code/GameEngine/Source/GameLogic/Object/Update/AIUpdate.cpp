@@ -995,6 +995,7 @@ void AIUpdateInterface::friend_notifyStateMachineChanged()
 DECLARE_PERF_TIMER(AIUpdateInterface_update)
 UpdateSleepTime AIUpdateInterface::update()
 {
+	DEJA_CONTEXT("AIUpdateInterface::update");
 	//DEBUG_LOG(("AIUpdateInterface frame %d: %08lx",TheGameLogic->getFrame(),getObject()));
 
 	USE_PERF_TIMER(AIUpdateInterface_update)
@@ -2084,6 +2085,7 @@ DECLARE_PERF_TIMER(doLocomotor)
  */
 UpdateSleepTime AIUpdateInterface::doLocomotor()
 {
+	DEJA_CONTEXT("AIUpdateInterface::doLocomotor");
 	USE_PERF_TIMER(doLocomotor)
 
 	if (getObject()->isKindOf(KINDOF_IMMOBILE))

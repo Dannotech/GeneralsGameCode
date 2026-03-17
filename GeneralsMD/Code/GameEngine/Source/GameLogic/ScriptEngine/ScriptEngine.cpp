@@ -5497,6 +5497,7 @@ void ScriptEngine::newMap()
 DECLARE_PERF_TIMER(ScriptEngine)
 void ScriptEngine::update()
 {
+	DEJA_CONTEXT("ScriptEngine::update");
 	USE_PERF_TIMER(ScriptEngine)
 #ifdef SPECIAL_SCRIPT_PROFILING
 #ifdef DEBUG_LOGGING

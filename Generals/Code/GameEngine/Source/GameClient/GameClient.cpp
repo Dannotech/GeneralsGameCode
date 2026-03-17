@@ -489,6 +489,7 @@ DECLARE_PERF_TIMER(GameClient_update)
 DECLARE_PERF_TIMER(GameClient_draw)
 void GameClient::update()
 {
+	DEJA_CONTEXT("GameClient::update");
 	USE_PERF_TIMER(GameClient_update)
 	// create the FRAME_TICK message
 	GameMessage *frameMsg = TheMessageStream->appendMessage( GameMessage::MSG_FRAME_TICK );
@@ -714,6 +715,7 @@ void GameClient::update()
 	}
 
 	{
+		DEJA_CONTEXT("GameClient::draw");
 		USE_PERF_TIMER(GameClient_draw)
 
 	// redraw all views, update the GUI

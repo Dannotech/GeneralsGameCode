@@ -534,6 +534,7 @@ void PhysicsBehavior::setBounceSound(const AudioEventRTS* bounceSound)
 DECLARE_PERF_TIMER(PhysicsBehavior)
 UpdateSleepTime PhysicsBehavior::update()
 {
+	DEJA_CONTEXT("PhysicsBehavior::update");
 	USE_PERF_TIMER(PhysicsBehavior)
 
 	Object*														obj = getObject();

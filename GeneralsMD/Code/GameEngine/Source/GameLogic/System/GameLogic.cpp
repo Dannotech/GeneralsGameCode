@@ -2793,6 +2793,7 @@ inline void GameLogic::validateSleepyUpdate() const
 // ------------------------------------------------------------------------------------------------
 void GameLogic::eraseSleepyUpdate(Int i)
 {
+	DEJA_CONTEXT("GameLogic::eraseSleepyUpdate");
 	USE_PERF_TIMER(SleepyMaintenance)
 
 	DEBUG_ASSERTCRASH(i >= 0 && i < m_sleepyUpdates.size(), ("bad sleepy idx"));
@@ -2829,6 +2830,7 @@ inline Bool isLowerPriority(const UpdateModulePtr a, const UpdateModulePtr b)
 // ------------------------------------------------------------------------------------------------
 Int GameLogic::rebalanceParentSleepyUpdate(Int i)
 {
+	DEJA_CONTEXT("GameLogic::rebalanceParentSleepyUpdate");
 	USE_PERF_TIMER(SleepyMaintenance)
 
 	DEBUG_ASSERTCRASH(i >= 0 && i < m_sleepyUpdates.size(), ("bad sleepy idx"));
@@ -2855,6 +2857,7 @@ Int GameLogic::rebalanceParentSleepyUpdate(Int i)
 // ------------------------------------------------------------------------------------------------
 Int GameLogic::rebalanceChildSleepyUpdate(Int i)
 {
+	DEJA_CONTEXT("GameLogic::rebalanceChildSleepyUpdate");
 	USE_PERF_TIMER(SleepyMaintenance)
 
 	DEBUG_ASSERTCRASH(i >= 0 && i < m_sleepyUpdates.size(), ("bad sleepy idx"));
@@ -2937,6 +2940,7 @@ Int GameLogic::rebalanceChildSleepyUpdate(Int i)
 // ------------------------------------------------------------------------------------------------
 void GameLogic::rebalanceSleepyUpdate(Int i)
 {
+	DEJA_CONTEXT("GameLogic::rebalanceSleepyUpdate");
 	USE_PERF_TIMER(SleepyMaintenance)
 
 	i = rebalanceParentSleepyUpdate(i);
@@ -2946,6 +2950,7 @@ void GameLogic::rebalanceSleepyUpdate(Int i)
 // ------------------------------------------------------------------------------------------------
 void GameLogic::remakeSleepyUpdate()
 {
+	DEJA_CONTEXT("GameLogic::remakeSleepyUpdate");
 	USE_PERF_TIMER(SleepyMaintenance)
 
 	Int parent = m_sleepyUpdates.size() / 2;
@@ -2963,6 +2968,7 @@ void GameLogic::remakeSleepyUpdate()
 // ------------------------------------------------------------------------------------------------
 void GameLogic::pushSleepyUpdate(UpdateModulePtr u)
 {
+	DEJA_CONTEXT("GameLogic::pushSleepyUpdate");
 	USE_PERF_TIMER(SleepyMaintenance)
 
 	DEBUG_ASSERTCRASH(u != nullptr, ("You may not pass null for sleepy update info"));
@@ -2976,6 +2982,7 @@ void GameLogic::pushSleepyUpdate(UpdateModulePtr u)
 // ------------------------------------------------------------------------------------------------
 UpdateModulePtr GameLogic::peekSleepyUpdate() const
 {
+	DEJA_CONTEXT("GameLogic::peekSleepyUpdate");
 	USE_PERF_TIMER(SleepyMaintenance)
 
 	UpdateModulePtr u = m_sleepyUpdates.front();
@@ -2986,6 +2993,7 @@ UpdateModulePtr GameLogic::peekSleepyUpdate() const
 // ------------------------------------------------------------------------------------------------
 void GameLogic::popSleepyUpdate()
 {
+	DEJA_CONTEXT("GameLogic::popSleepyUpdate");
 	USE_PERF_TIMER(SleepyMaintenance)
 
 	Int sz = m_sleepyUpdates.size();
@@ -3719,6 +3727,7 @@ void GameLogic::update()
 			DisabledMaskType dis = u->friend_getObject()->getDisabledFlags();
 			if (!dis.any() || dis.anyIntersectionWith(u->getDisabledTypesToProcess()))
 			{
+				DEJA_CONTEXT("GameLogic::update");
 				USE_PERF_TIMER(GameLogic_update_normal)
 
 				m_curUpdateModule = u;
@@ -3759,6 +3768,7 @@ void GameLogic::update()
 			DisabledMaskType dis = u->friend_getObject()->getDisabledFlags();
 			if (!dis.any() || dis.anyIntersectionWith(u->getDisabledTypesToProcess()))
 			{
+				DEJA_CONTEXT("GameLogic::update");
 				USE_PERF_TIMER(GameLogic_update_sleepy)
 
 				//DEBUG_LOG(("calling update %08lx (%d %d)...",update,update->friend_getNextCallFrame(),update->friend_getNextCallPhase()));

@@ -65,6 +65,7 @@ enum
 #include "Common/FileSystem.h"
 #include "Common/file.h"
 #include "Common/PerfTimer.h"
+#include "DejaLib.h"
 #include "Common/Player.h"
 #include "Common/PlayerList.h"
 #include "GameLogic/ScriptEngine.h"
@@ -1525,6 +1526,7 @@ DECLARE_PERF_TIMER(Tree_Render)
 //=============================================================================
 void W3DTreeBuffer::drawTrees(CameraClass * camera, RefRenderObjListIterator *pDynamicLightsIterator)
 {
+	DEJA_CONTEXT("W3DTreeBuffer::drawTrees");
 	USE_PERF_TIMER(Tree_Render)
 	if (!m_isTerrainPass) {
 		return;

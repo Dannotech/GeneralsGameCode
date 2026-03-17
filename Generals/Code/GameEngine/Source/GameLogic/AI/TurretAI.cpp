@@ -658,6 +658,7 @@ void TurretAI::friend_notifyStateMachineChanged()
 DECLARE_PERF_TIMER(TurretAI)
 UpdateSleepTime TurretAI::updateTurretAI()
 {
+	DEJA_CONTEXT("TurretAI::updateTurretAI");
 	USE_PERF_TIMER(TurretAI)
 
 #if defined(RTS_DEBUG)

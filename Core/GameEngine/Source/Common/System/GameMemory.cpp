@@ -233,6 +233,7 @@ static Int roundUpMemBound(Int i)
 */
 static void* sysAllocateDoNotZero(Int numBytes)
 {
+	DEJA_CONTEXT("sysAllocateDoNotZero");
 	void* p = ::GlobalAlloc(GMEM_FIXED, numBytes);
 	if (!p)
 		throw ERROR_OUT_OF_MEMORY;
@@ -260,6 +261,7 @@ static void* sysAllocateDoNotZero(Int numBytes)
 */
 static void sysFree(void* p)
 {
+	DEJA_CONTEXT("sysFree");
 	if (p)
 	{
 #ifdef MEMORYPOOL_DEBUG
@@ -847,6 +849,7 @@ Bool BlockCheckpointInfo::shouldBeInReport(Int flags, Int startCheckpoint, Int e
 void MemoryPoolSingleBlock::initBlock(Int logicalSize, MemoryPoolBlob *owningBlob,
 			MemoryPoolFactory *owningFactory DECLARE_LITERALSTRING_ARG2)
 {
+	DEJA_CONTEXT("MemoryPoolSingleBlock::initBlock");
 	// Note that while it is OK for owningBlob to be null, it is NEVER ok
 	// for owningFactory to be null.
 	DEBUG_ASSERTCRASH(owningFactory, ("null factory"));
@@ -1031,6 +1034,7 @@ Int MemoryPoolSingleBlock::debugSingleBlockReportLeak(const char* owner)
 */
 void MemoryPoolSingleBlock::debugVerifyBlock()
 {
+	DEJA_CONTEXT("MemoryPoolSingleBlock::debugVerifyBlock");
 	USE_PERF_TIMER(MemoryPoolDebugging)
 
 	DEBUG_ASSERTCRASH(this, ("null this"));
@@ -1058,6 +1062,7 @@ void MemoryPoolSingleBlock::debugVerifyBlock()
 */
 void MemoryPoolSingleBlock::debugMarkBlockAsFree()
 {
+	DEJA_CONTEXT("MemoryPoolSingleBlock::debugMarkBlockAsFree");
 	USE_PERF_TIMER(MemoryPoolDebugging)
 
 	::memset32(getUserDataNoDbg(), GARBAGE_FILL_VALUE, m_logicalSize);
@@ -1076,6 +1081,7 @@ void MemoryPoolSingleBlock::debugMarkBlockAsFree()
 */
 Bool MemoryPoolSingleBlock::debugCheckUnderrun()
 {
+	DEJA_CONTEXT("MemoryPoolSingleBlock::debugCheckUnderrun");
 	USE_PERF_TIMER(MemoryPoolDebugging)
 
 #ifdef MEMORYPOOL_BOUNDINGWALL
@@ -1101,6 +1107,7 @@ Bool MemoryPoolSingleBlock::debugCheckUnderrun()
 */
 Bool MemoryPoolSingleBlock::debugCheckOverrun()
 {
+	DEJA_CONTEXT("MemoryPoolSingleBlock::debugCheckOverrun");
 	USE_PERF_TIMER(MemoryPoolDebugging)
 
 #ifdef MEMORYPOOL_BOUNDINGWALL
@@ -1308,6 +1315,7 @@ void MemoryPoolBlob::freeSingleBlock(MemoryPoolSingleBlock *block)
 */
 void MemoryPoolBlob::debugMemoryVerifyBlob()
 {
+	DEJA_CONTEXT("MemoryPoolBlob::debugMemoryVerifyBlob");
 	USE_PERF_TIMER(MemoryPoolDebugging)
 
 	DEBUG_ASSERTCRASH(m_owningPool != nullptr, ("bad owner"));
@@ -1349,6 +1357,7 @@ Int MemoryPoolBlob::debugBlobReportLeaks(const char* owner)
 */
 Bool MemoryPoolBlob::debugIsBlockInBlob(void *pBlockPtr)
 {
+	DEJA_CONTEXT("MemoryPoolBlob::debugIsBlockInBlob");
 	USE_PERF_TIMER(MemoryPoolDebugging)
 
 	MemoryPoolSingleBlock *block = MemoryPoolSingleBlock::recoverBlockFromUserData(pBlockPtr);
@@ -1628,6 +1637,7 @@ Int MemoryPool::freeBlob(MemoryPoolBlob* blob)
 */
 void* MemoryPool::allocateBlockDoNotZeroImplementation(DECLARE_LITERALSTRING_ARG1)
 {
+	DEJA_CONTEXT("MemoryPool::allocateBlockDoNotZeroImplementation");
 	ScopedCriticalSection scopedCriticalSection(TheMemoryPoolCriticalSection);
 
 	if (m_firstBlobWithFreeBlocks != nullptr && !m_firstBlobWithFreeBlocks->hasAnyFreeBlocks())
@@ -1901,6 +1911,7 @@ Int MemoryPool::debugPoolReportLeaks( const char* owner )
 */
 void MemoryPool::debugMemoryVerifyPool()
 {
+	DEJA_CONTEXT("MemoryPool::debugMemoryVerifyPool");
 	USE_PERF_TIMER(MemoryPoolDebugging)
 
 	Int used = 0;
@@ -1923,6 +1934,7 @@ void MemoryPool::debugMemoryVerifyPool()
 */
 Bool MemoryPool::debugIsBlockInPool(void *pBlockPtr)
 {
+	DEJA_CONTEXT("MemoryPool::debugIsBlockInPool");
 	USE_PERF_TIMER(MemoryPoolDebugging)
 
 	if (!pBlockPtr)
@@ -1960,6 +1972,7 @@ Bool MemoryPool::debugIsBlockInPool(void *pBlockPtr)
 */
 const char *MemoryPool::debugGetBlockTagString(void *pBlockPtr)
 {
+	DEJA_CONTEXT("MemoryPool::debugGetBlockTagString");
 	USE_PERF_TIMER(MemoryPoolDebugging)
 
 	if (!pBlockPtr)
@@ -2127,6 +2140,7 @@ void DynamicMemoryAllocator::removeFromList(DynamicMemoryAllocator **pHead)
 #ifdef MEMORYPOOL_DEBUG
 void DynamicMemoryAllocator::debugIgnoreLeaksForThisBlock(void* pBlockPtr)
 {
+	DEJA_CONTEXT("DynamicMemoryAllocator::debugIgnoreLeaksForThisBlock");
 	USE_PERF_TIMER(MemoryPoolDebugging)
 
 	if (!pBlockPtr)
@@ -2161,6 +2175,7 @@ void DynamicMemoryAllocator::debugIgnoreLeaksForThisBlock(void* pBlockPtr)
 */
 void *DynamicMemoryAllocator::allocateBytesDoNotZeroImplementation(Int numBytes DECLARE_LITERALSTRING_ARG2)
 {
+	DEJA_CONTEXT("DynamicMemoryAllocator::allocateBytesDoNotZeroImplementation");
 	ScopedCriticalSection scopedCriticalSection(TheDmaCriticalSection);
 
 	void *result = nullptr;
@@ -2274,6 +2289,7 @@ void *DynamicMemoryAllocator::allocateBytesImplementation(Int numBytes DECLARE_L
 */
 void DynamicMemoryAllocator::freeBytes(void* pBlockPtr)
 {
+	DEJA_CONTEXT("DynamicMemoryAllocator::freeBytes");
 	if (!pBlockPtr)
 		return;
 
@@ -2398,6 +2414,7 @@ void DynamicMemoryAllocator::reset()
 */
 Bool DynamicMemoryAllocator::debugIsPoolInDma(MemoryPool *pool)
 {
+	DEJA_CONTEXT("DynamicMemoryAllocator::debugIsPoolInDma");
 	USE_PERF_TIMER(MemoryPoolDebugging)
 
 	if (!pool)
@@ -2421,6 +2438,7 @@ Bool DynamicMemoryAllocator::debugIsPoolInDma(MemoryPool *pool)
 */
 Bool DynamicMemoryAllocator::debugIsBlockInDma(void *pBlockPtr)
 {
+	DEJA_CONTEXT("DynamicMemoryAllocator::debugIsBlockInDma");
 	USE_PERF_TIMER(MemoryPoolDebugging)
 
 	if (!pBlockPtr)
@@ -2453,6 +2471,7 @@ Bool DynamicMemoryAllocator::debugIsBlockInDma(void *pBlockPtr)
 */
 const char *DynamicMemoryAllocator::debugGetBlockTagString(void *pBlockPtr)
 {
+	DEJA_CONTEXT("DynamicMemoryAllocator::debugGetBlockTagString");
 	USE_PERF_TIMER(MemoryPoolDebugging)
 
 	if (!pBlockPtr)
@@ -2475,6 +2494,7 @@ const char *DynamicMemoryAllocator::debugGetBlockTagString(void *pBlockPtr)
 */
 void DynamicMemoryAllocator::debugMemoryVerifyDma()
 {
+	DEJA_CONTEXT("DynamicMemoryAllocator::debugMemoryVerifyDma");
 	USE_PERF_TIMER(MemoryPoolDebugging)
 
 	for (MemoryPoolSingleBlock *b = m_rawBlocks; b; b = b->getNextRawBlock())
@@ -2507,6 +2527,7 @@ void DynamicMemoryAllocator::debugResetCheckpoints()
 */
 Int DynamicMemoryAllocator::debugCalcRawBlockBytes(Int *numBlocks)
 {
+	DEJA_CONTEXT("DynamicMemoryAllocator::debugCalcRawBlockBytes");
 	USE_PERF_TIMER(MemoryPoolDebugging)
 
 	if (numBlocks)
@@ -2803,6 +2824,7 @@ static const char* s_specialPrefixes[MAX_SPECIAL_USED] =
 */
 void MemoryPoolFactory::adjustTotals(const char* tagString, Int usedDelta, Int physDelta)
 {
+	DEJA_CONTEXT("MemoryPoolFactory::adjustTotals");
 	USE_PERF_TIMER(MemoryPoolDebugging)
 
 	m_usedBytes += usedDelta;
@@ -2853,6 +2875,7 @@ void MemoryPoolFactory::debugSetInitFillerIndex(Int index)
 */
 void MemoryPoolFactory::debugMemoryVerify()
 {
+	DEJA_CONTEXT("MemoryPoolFactory::debugMemoryVerify");
 	USE_PERF_TIMER(MemoryPoolDebugging)
 
 	Int used = 0, phys = 0;
@@ -2885,6 +2908,7 @@ void MemoryPoolFactory::debugMemoryVerify()
 */
 Bool MemoryPoolFactory::debugIsBlockInAnyPool(void *pBlock)
 {
+	DEJA_CONTEXT("MemoryPoolFactory::debugIsBlockInAnyPool");
 	USE_PERF_TIMER(MemoryPoolDebugging)
 
 #ifdef MEMORYPOOL_INTENSE_VERIFY
@@ -2915,6 +2939,7 @@ Bool MemoryPoolFactory::debugIsBlockInAnyPool(void *pBlock)
 */
 const char *MemoryPoolFactory::debugGetBlockTagString(void *pBlockPtr)
 {
+	DEJA_CONTEXT("MemoryPoolFactory::debugGetBlockTagString");
 	USE_PERF_TIMER(MemoryPoolDebugging)
 
 	if (!pBlockPtr)

@@ -1,0 +1,4 @@
+# Override root ignores for vendored DejaInsight library files
+!*.sln
+!*.vcproj
+!*.a

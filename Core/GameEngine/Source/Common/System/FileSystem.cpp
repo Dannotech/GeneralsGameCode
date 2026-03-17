@@ -122,7 +122,7 @@ FileSystem	*TheFileSystem = nullptr;
 
 FileSystem::FileSystem()
 {
-
+	DEJA_CONTEXT("FileSystem::FileSystem");
 }
 
 //============================================================================
@@ -131,7 +131,7 @@ FileSystem::FileSystem()
 
 FileSystem::~FileSystem()
 {
-
+	DEJA_CONTEXT("FileSystem::~FileSystem");
 }
 
 //============================================================================
@@ -140,6 +140,7 @@ FileSystem::~FileSystem()
 
 void		FileSystem::init()
 {
+	DEJA_CONTEXT("FileSystem::init");
 	TheLocalFileSystem->init();
 	TheArchiveFileSystem->init();
 }
@@ -150,6 +151,7 @@ void		FileSystem::init()
 
 void		FileSystem::update()
 {
+	DEJA_CONTEXT("FileSystem::update");
 	USE_PERF_TIMER(FileSystem)
 	TheLocalFileSystem->update();
 	TheArchiveFileSystem->update();
@@ -161,6 +163,7 @@ void		FileSystem::update()
 
 void		FileSystem::reset()
 {
+	DEJA_CONTEXT("FileSystem::reset");
 	USE_PERF_TIMER(FileSystem)
 	TheLocalFileSystem->reset();
 	TheArchiveFileSystem->reset();
@@ -172,6 +175,7 @@ void		FileSystem::reset()
 
 File*		FileSystem::openFile( const Char *filename, Int access, size_t bufferSize, FileInstance instance )
 {
+	DEJA_CONTEXT("FileSystem::openFile");
 	USE_PERF_TIMER(FileSystem)
 	File *file = nullptr;
 
@@ -223,6 +227,7 @@ File*		FileSystem::openFile( const Char *filename, Int access, size_t bufferSize
 
 Bool FileSystem::doesFileExist(const Char *filename, FileInstance instance) const
 {
+	DEJA_CONTEXT("FileSystem::doesFileExist");
 	USE_PERF_TIMER(FileSystem)
 
 #if ENABLE_FILESYSTEM_EXISTENCE_CACHE
@@ -283,6 +288,7 @@ Bool FileSystem::doesFileExist(const Char *filename, FileInstance instance) cons
 //============================================================================
 void FileSystem::getFileListInDirectory(const AsciiString& directory, const AsciiString& searchName, FilenameList &filenameList, Bool searchSubdirectories) const
 {
+	DEJA_CONTEXT("FileSystem::getFileListInDirectory");
 	USE_PERF_TIMER(FileSystem)
 	TheLocalFileSystem->getFileListInDirectory(AsciiString::TheEmptyString, directory, searchName, filenameList, searchSubdirectories);
 	TheArchiveFileSystem->getFileListInDirectory(AsciiString::TheEmptyString, directory, searchName, filenameList, searchSubdirectories);
@@ -293,6 +299,7 @@ void FileSystem::getFileListInDirectory(const AsciiString& directory, const Asci
 //============================================================================
 Bool FileSystem::getFileInfo(const AsciiString& filename, FileInfo *fileInfo, FileInstance instance) const
 {
+	DEJA_CONTEXT("FileSystem::getFileInfo");
 	USE_PERF_TIMER(FileSystem)
 
 	// TheSuperHackers @todo Add file info cache?
@@ -322,6 +329,7 @@ Bool FileSystem::getFileInfo(const AsciiString& filename, FileInfo *fileInfo, Fi
 //============================================================================
 Bool FileSystem::createDirectory(AsciiString directory)
 {
+	DEJA_CONTEXT("FileSystem::createDirectory");
 	USE_PERF_TIMER(FileSystem)
 	if (TheLocalFileSystem != nullptr) {
 		return TheLocalFileSystem->createDirectory(directory);
@@ -334,6 +342,7 @@ Bool FileSystem::createDirectory(AsciiString directory)
 //============================================================================
 AsciiString FileSystem::normalizePath(const AsciiString& path)
 {
+	DEJA_CONTEXT("FileSystem::normalizePath");
 	return TheLocalFileSystem->normalizePath(path);
 }
 
@@ -342,6 +351,7 @@ AsciiString FileSystem::normalizePath(const AsciiString& path)
 //============================================================================
 Bool FileSystem::isPathInDirectory(const AsciiString& testPath, const AsciiString& basePath)
 {
+	DEJA_CONTEXT("FileSystem::isPathInDirectory");
 	AsciiString testPathNormalized = TheFileSystem->normalizePath(testPath);
 	AsciiString basePathNormalized = TheFileSystem->normalizePath(basePath);
 

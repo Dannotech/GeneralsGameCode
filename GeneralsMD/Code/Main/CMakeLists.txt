@@ -81,6 +81,15 @@ if(MINGW AND COMMAND add_debug_strip_target)
     add_debug_strip_target(z_generals)
 endif()
 
+# DejaInsight static libs (MT/MTd) conflict with the game's /MD runtime.
+# Exclude the MT CRT default libs to suppress LNK4098.
+if(TARGET deja_insight)
+    target_link_options(z_generals PRIVATE
+        $<$<CONFIG:Debug>:/NODEFAULTLIB:LIBCMTD>
+        $<$<NOT:$<CONFIG:Debug>>:/NODEFAULTLIB:LIBCMT>
+    )
+endif()
+
 # Post-build: copy exe to retail install directory for quick iteration.
 # Set ZEROHOUR_GAME_DIR to the root of your Zero Hour installation to enable this.
 set(_post_build_script "${CMAKE_CURRENT_BINARY_DIR}/post_build_copy.cmake")

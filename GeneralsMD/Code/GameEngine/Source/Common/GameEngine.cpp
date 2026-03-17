@@ -891,6 +891,7 @@ DECLARE_PERF_TIMER(GameEngine_update)
  */
 void GameEngine::update()
 {
+	DEJA_CONTEXT("GameEngine::update");
 	USE_PERF_TIMER(GameEngine_update)
 	{
 		{

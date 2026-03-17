@@ -35,6 +35,7 @@
 #include <stdlib.h>
 
 // USER INCLUDES //////////////////////////////////////////////////////////////
+#include "DejaLib.h"
 #include "Lib/BaseType.h"
 #include "Common/GameUtility.h"
 #include "Common/GlobalData.h"
@@ -1756,6 +1757,7 @@ void RTS3DScene::doRender( CameraClass * cam )
 //=============================================================================
 void RTS3DScene::draw()
 {
+	DEJA_CONTEXT("RTS3DScene::draw");
 	if (m_camera == nullptr) {
 		DEBUG_CRASH(("Null m_camera in RTS3DScene::draw"));
 		return;
@@ -1821,6 +1823,7 @@ void RTS2DScene::doRender( CameraClass * cam )
 //=============================================================================
 void RTS2DScene::draw()
 {
+	DEJA_CONTEXT("RTS2DScene::draw");
 	if (m_camera == nullptr) {
 		DEBUG_CRASH(("Null m_camera in RTS2DScene::draw"));
 		return;

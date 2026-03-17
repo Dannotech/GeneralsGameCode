@@ -67,6 +67,7 @@
 #include "resource.h"
 
 #include <rts/profile.h>
+#include "DejaLib.h"
 #ifdef RTS_ENABLE_CRASHDUMP
 #include "Common/MiniDumper.h"
 #endif
@@ -791,6 +792,10 @@ static LONG WINAPI UnHandledExceptionFilter( struct _EXCEPTION_POINTERS* e_info 
 Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
                       LPSTR lpCmdLine, Int nCmdShow )
 {
+	DEJA_APP_LABEL("Generals Zero Hour");
+	DEJA_THREAD_LABEL("Main Thread");
+	DEJA_CONTEXT("WinMain");
+
 	Int exitcode = 1;
 
 #ifdef RTS_PROFILE
@@ -947,6 +952,8 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	TheUnicodeStringCriticalSection = nullptr;
 	TheDmaCriticalSection = nullptr;
 	TheMemoryPoolCriticalSection = nullptr;
+
+	DEJA_TERMINATE();
 
 	return exitcode;
 

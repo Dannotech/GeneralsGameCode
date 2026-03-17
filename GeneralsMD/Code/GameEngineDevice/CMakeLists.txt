@@ -219,3 +219,7 @@ target_link_libraries(z_gameenginedevice PUBLIC
     corei_gameenginedevice_public
     z_gameengine
 )
+
+if(TARGET deja_insight)
+    target_link_libraries(z_gameenginedevice PRIVATE deja_insight)
+endif()

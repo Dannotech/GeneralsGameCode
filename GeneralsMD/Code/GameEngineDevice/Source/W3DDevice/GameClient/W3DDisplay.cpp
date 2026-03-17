@@ -37,6 +37,9 @@ static void drawFramerateBar();
 #include <numeric>
 #include <stdlib.h>
 #include <windows.h>
+
+// USER INCLUDES //////////////////////////////////////////////////////////////
+#include "DejaLib.h"
 #include <io.h>
 #include <time.h>
 
@@ -1656,6 +1659,7 @@ void W3DDisplay::step()
 //DECLARE_PERF_TIMER(W3DDisplay_draw)
 void W3DDisplay::draw()
 {
+	DEJA_CONTEXT("W3DDisplay::draw");
 	//USE_PERF_TIMER(W3DDisplay_draw)
 
 	extern HWND ApplicationHWnd;

@@ -3604,6 +3604,7 @@ extern __int64 Total_Load_3D_Assets;
 // ------------------------------------------------------------------------------------------------
 void GameLogic::update()
 {
+	DEJA_CONTEXT("GameLogic::update");
 	USE_PERF_TIMER(GameLogic_update)
 
 	LatchRestore<Bool> inUpdateLatch(m_isInUpdate, TRUE);

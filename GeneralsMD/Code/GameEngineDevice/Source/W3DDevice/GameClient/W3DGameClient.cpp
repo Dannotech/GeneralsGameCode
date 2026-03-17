@@ -37,7 +37,7 @@
 #include <stdlib.h>
 
 // USER INCLUDES //////////////////////////////////////////////////////////////
-
+#include "DejaLib.h"
 #include "Common/ThingTemplate.h"
 #include "Common/ThingFactory.h"
 #include "Common/ModuleFactory.h"
@@ -89,6 +89,7 @@ void W3DGameClient::init()
 //-------------------------------------------------------------------------------------------------
 void W3DGameClient::update()
 {
+	DEJA_CONTEXT("W3DGameClient::update");
 
 	// call base
 	GameClient::update();

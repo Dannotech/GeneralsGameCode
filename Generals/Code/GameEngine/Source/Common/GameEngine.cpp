@@ -844,6 +844,7 @@ void GameEngine::execute()
 			}
 
 			TheFramePacer->update();
+		DEJA_NEXT_FRAME();
 		}
 
 #ifdef PERF_TIMERS

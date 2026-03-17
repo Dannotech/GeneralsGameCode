@@ -849,7 +849,7 @@ Bool BlockCheckpointInfo::shouldBeInReport(Int flags, Int startCheckpoint, Int e
 void MemoryPoolSingleBlock::initBlock(Int logicalSize, MemoryPoolBlob *owningBlob,
 			MemoryPoolFactory *owningFactory DECLARE_LITERALSTRING_ARG2)
 {
-	DEJA_CONTEXT("MemoryPoolSingleBlock::initBlock");
+	//DEJA_CONTEXT("MemoryPoolSingleBlock::initBlock"); // too hot for profiling
 	// Note that while it is OK for owningBlob to be null, it is NEVER ok
 	// for owningFactory to be null.
 	DEBUG_ASSERTCRASH(owningFactory, ("null factory"));
@@ -1637,7 +1637,7 @@ Int MemoryPool::freeBlob(MemoryPoolBlob* blob)
 */
 void* MemoryPool::allocateBlockDoNotZeroImplementation(DECLARE_LITERALSTRING_ARG1)
 {
-	DEJA_CONTEXT("MemoryPool::allocateBlockDoNotZeroImplementation");
+	//DEJA_CONTEXT("MemoryPool::allocateBlockDoNotZeroImplementation"); // too hot for profiling
 	ScopedCriticalSection scopedCriticalSection(TheMemoryPoolCriticalSection);
 
 	if (m_firstBlobWithFreeBlocks != nullptr && !m_firstBlobWithFreeBlocks->hasAnyFreeBlocks())
@@ -2175,7 +2175,7 @@ void DynamicMemoryAllocator::debugIgnoreLeaksForThisBlock(void* pBlockPtr)
 */
 void *DynamicMemoryAllocator::allocateBytesDoNotZeroImplementation(Int numBytes DECLARE_LITERALSTRING_ARG2)
 {
-	DEJA_CONTEXT("DynamicMemoryAllocator::allocateBytesDoNotZeroImplementation");
+	//DEJA_CONTEXT("DynamicMemoryAllocator::allocateBytesDoNotZeroImplementation"); // too hot for profiling
 	ScopedCriticalSection scopedCriticalSection(TheDmaCriticalSection);
 
 	void *result = nullptr;
@@ -2289,7 +2289,7 @@ void *DynamicMemoryAllocator::allocateBytesImplementation(Int numBytes DECLARE_L
 */
 void DynamicMemoryAllocator::freeBytes(void* pBlockPtr)
 {
-	DEJA_CONTEXT("DynamicMemoryAllocator::freeBytes");
+	//DEJA_CONTEXT("DynamicMemoryAllocator::freeBytes"); // too hot for profiling
 	if (!pBlockPtr)
 		return;
 

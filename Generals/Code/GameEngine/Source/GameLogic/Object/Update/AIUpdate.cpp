@@ -843,6 +843,7 @@ Bool AIUpdateInterface::chooseLocomotorSetExplicit(LocomotorSetType wst)
 //-------------------------------------------------------------------------------------------------
 void AIUpdateInterface::chooseGoodLocomotorFromCurrentSet()
 {
+	DEJA_CONTEXT("AIUpdateInterface::chooseGoodLocomotorFromCurrentSet");
 	Locomotor* prevLoco = m_curLocomotor;
 
 	Locomotor* newLoco = TheAI->pathfinder()->chooseBestLocomotorForPosition(getObject()->getLayer(), &m_locomotorSet, getObject()->getPosition());

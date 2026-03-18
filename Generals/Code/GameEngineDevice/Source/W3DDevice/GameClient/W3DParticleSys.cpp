@@ -26,6 +26,7 @@
 // W3D Particle System implementation
 // Author: Michael S. Booth, November 2001
 
+#include "DejaLib.h"
 #include "GameClient/Color.h"
 #include "W3DDevice/GameClient/W3DParticleSys.h"
 #include "W3DDevice/GameClient/W3DAssetManager.h"
@@ -94,13 +95,14 @@ void W3DParticleSystemManager::queueParticleRender()
  */
 void DoParticles( RenderInfoClass &rinfo )
 {
+	DEJA_CONTEXT("DoParticles");
 	if (TheParticleSystemManager)
 		TheParticleSystemManager->doParticles(rinfo);
 }
 
 void W3DParticleSystemManager::doParticles(RenderInfoClass &rinfo)
 {
-
+	DEJA_CONTEXT("W3DParticleSystemManager::doParticles");
 	if (m_readyToRender == false)
 		return;
 

@@ -50,6 +50,7 @@
 #include "WW3D2/statistics.h"
 #include "Common/Debug.h"
 #include "Common/PerfTimer.h"
+#include "DejaLib.h"
 
 #define SUN_DISTANCE_FROM_GROUND	10000.0f	//distance of sun (our only light source).
 
@@ -65,6 +66,7 @@ Vector3 LightPosWorld[ MAX_SHADOW_LIGHTS ] =
 
 void PrepareShadows()
 {
+	DEJA_CONTEXT("PrepareShadows");
 	if (TheW3DProjectedShadowManager)
 		TheW3DProjectedShadowManager->prepareShadows();
 }
@@ -72,6 +74,7 @@ void PrepareShadows()
 //DECLARE_PERF_TIMER(shadowsRender)
 void DoShadows(RenderInfoClass & rinfo, Bool stencilPass)
 {
+	DEJA_CONTEXT("DoShadows");
 	//USE_PERF_TIMER(shadowsRender)
 	shadowCameraFrustum=&rinfo.Camera.Get_Frustum();
 	Int projectionCount=0;

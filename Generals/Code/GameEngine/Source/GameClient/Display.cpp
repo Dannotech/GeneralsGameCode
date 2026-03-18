@@ -110,7 +110,7 @@ void Display::attachView( View *view )
  */
 void Display::drawViews()
 {
-
+	DEJA_CONTEXT("Display::drawViews");
 	for( View *v = m_viewList; v; v = v->getNextView() )
 		v->drawView();
 
@@ -122,7 +122,7 @@ void Display::drawViews()
  */
 void Display::updateViews()
 {
-
+	DEJA_CONTEXT("Display::updateViews");
 	for( View *v = m_viewList; v; v = v->getNextView() )
 		v->updateView();
 

@@ -413,6 +413,7 @@ StateReturnType StateMachine::resetToDefaultState()
  */
 StateReturnType StateMachine::updateStateMachine()
 {
+	DEJA_CONTEXT("StateMachine::updateStateMachine");
 	UnsignedInt now = TheGameLogic->getFrame();
 	if (m_sleepTill != 0 && now < m_sleepTill)
 	{

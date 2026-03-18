@@ -848,6 +848,7 @@ Real Locomotor::getMaxLift(BodyDamageType condition) const
 //-------------------------------------------------------------------------------------------------
 void Locomotor::locoUpdate_moveTowardsAngle(Object* obj, Real goalAngle)
 {
+	DEJA_CONTEXT("Locomotor::locoUpdate_moveTowardsAngle");
 	setFlag(MAINTAIN_POS_IS_VALID, false);
 
 	if (obj == nullptr || m_template == nullptr)
@@ -925,6 +926,7 @@ void Locomotor::setPhysicsOptions(Object* obj)
 void Locomotor::locoUpdate_moveTowardsPosition(Object* obj, const Coord3D& goalPos,
 																							 Real onPathDistToGoal, Real desiredSpeed, Bool *blocked)
 {
+	DEJA_CONTEXT("Locomotor::locoUpdate_moveTowardsPosition");
 	setFlag(MAINTAIN_POS_IS_VALID, false);
 
 	BodyDamageType bdt = obj->getBodyModule()->getDamageState();

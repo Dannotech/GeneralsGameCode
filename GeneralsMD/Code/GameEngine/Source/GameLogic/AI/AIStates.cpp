@@ -849,6 +849,7 @@ AsciiString AIStateMachine::getCurrentStateName() const
  */
 StateReturnType AIStateMachine::updateStateMachine()
 {
+	DEJA_CONTEXT("AIStateMachine::updateStateMachine");
 	//-extraLogging
 	#if defined(RTS_DEBUG)
 		Bool idle = getOwner()->getAI()->isIdle();

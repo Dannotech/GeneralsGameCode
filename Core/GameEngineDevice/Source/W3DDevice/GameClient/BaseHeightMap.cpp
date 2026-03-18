@@ -58,6 +58,7 @@
 
 #include "Common/GlobalData.h"
 #include "Common/PerfTimer.h"
+#include "DejaLib.h"
 #include "Common/Xfer.h"
 
 #include "GameClient/TerrainVisual.h"
@@ -119,6 +120,7 @@ BaseHeightMapRenderObjClass *TheTerrainRenderObject=nullptr;
     transparent objects. */
 void DoTrees(RenderInfoClass & rinfo)
 {
+	DEJA_CONTEXT("DoTrees");
 	if (TheTerrainRenderObject) {
 		TheTerrainRenderObject->renderTrees(&rinfo.Camera);
 	}

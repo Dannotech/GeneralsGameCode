@@ -2459,7 +2459,7 @@ void TerrainLogic::changeWaterHeightOverTime( const WaterHandle *water,
 	// add the entry into the array of water to update
 	m_waterToUpdate[ m_numWaterToUpdate ].waterTable = water;
 	m_waterToUpdate[ m_numWaterToUpdate ].changePerFrame = (finalHeight - currentHeight) /
-																												 (LOGICFRAMES_PER_SECOND * transitionTimeInSeconds);
+																												 (static_cast<float>(LOGICFRAMES_PER_SECOND) * transitionTimeInSeconds);
 	m_waterToUpdate[ m_numWaterToUpdate ].targetHeight = finalHeight;
 	m_waterToUpdate[ m_numWaterToUpdate ].damageAmount = damageAmount;
 	m_waterToUpdate[ m_numWaterToUpdate ].currentHeight = currentHeight;
@@ -2564,7 +2564,7 @@ void TerrainLogic::findAxisAlignedBoundingRect( const WaterHandle *water, Region
 
 void TerrainLogic::setActiveBoundary(Int newActiveBoundary)
 {
-	if (newActiveBoundary < 0 || newActiveBoundary >= m_boundaries.size()) {
+	if (newActiveBoundary < 0 || newActiveBoundary >= (Int)m_boundaries.size()) {
 		// probably should DEBUG_ASSERT here
 		return;
 	}
@@ -2944,7 +2944,7 @@ void TerrainLogic::xfer( Xfer *xfer )
 		xfer->xferInt( &m_numWaterToUpdate );
 
 		// water update entry data
-		for( UnsignedInt i = 0; i < m_numWaterToUpdate; ++i )
+		for( UnsignedInt i = 0; i < (UnsignedInt)m_numWaterToUpdate; ++i )
 		{
 
 			// water handle

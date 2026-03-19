@@ -1204,7 +1204,7 @@ void DrawObject::updateFeedbackVB(void)
 	Real radius = m_brushWidth/2.0 + m_brushFeatherWidth;
 
 	if (!m_squareFeedback) {
-		if (radius < MAX_RADIUS/2) {
+		if (radius < static_cast<float>(MAX_RADIUS)/2) {
 			brushWidth = brushWidth*2;
 			featherWidth = featherWidth*2;
 			doubleResolution = true;
@@ -1217,7 +1217,7 @@ void DrawObject::updateFeedbackVB(void)
 	WorldHeightMapEdit *pMap = pDoc->GetHeightMap();
 #define ADJUST_FROM_INDEX_TO_REAL(k) ((k-pMap->getBorderSize())*MAP_XY_FACTOR)
 
-	if (radius > MAX_RADIUS) radius = MAX_RADIUS;
+	if (radius > static_cast<float>(MAX_RADIUS)) radius = static_cast<float>(MAX_RADIUS);
 	Real offset = 0;
 	if (m_brushWidth&1) offset = 0.5f;
 	Int minX = floor(m_cellCenter.x-radius+offset);

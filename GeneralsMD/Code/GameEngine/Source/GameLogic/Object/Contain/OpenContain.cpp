@@ -1810,7 +1810,8 @@ void OpenContain::xfer( Xfer *xfer )
 	xfer->xferBool( &m_rallyPointExists );
 
 	// enter exit map info
-	UnsignedShort enterExitCount = m_objectEnterExitInfo.size();
+	DEBUG_ASSERTCRASH(m_objectEnterExitInfo.size() <= USHRT_MAX, ("size exceeds UnsignedShort"));
+	UnsignedShort enterExitCount = static_cast<UnsignedShort>(m_objectEnterExitInfo.size());
 	xfer->xferUnsignedShort( &enterExitCount );
 	ObjectEnterExitType enterExitType;
 	if( xfer->getXferMode() == XFER_SAVE )

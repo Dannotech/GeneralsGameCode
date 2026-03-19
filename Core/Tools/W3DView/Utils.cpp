@@ -35,6 +35,7 @@
 #include "hlod.h"
 #include <VFW.h>
 #include "rcfile.h"
+#include <VersionHelper.h>
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -707,8 +708,7 @@ Are_Glide_Drivers_Acceptable (void)
 	bool retval = true;
 
 	// Is this windows NT?
-	OSVERSIONINFO version = { sizeof (OSVERSIONINFO), 0 };
-	if (::GetVersionEx (&version) && (version.dwPlatformId == VER_PLATFORM_WIN32_NT)) {
+	if (IsWindowsXPOrGreater()) {
 
 		// Now assume failure
 		retval = false;

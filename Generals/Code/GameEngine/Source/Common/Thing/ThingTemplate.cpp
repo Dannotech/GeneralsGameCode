@@ -1125,14 +1125,14 @@ void ThingTemplate::resolveNames()
 	//      the object had. So be sure to make sure all string lookups don't blindly lookup things -- check
 	//      if the string isNotEmpty first!
 
-	for (i = 0; i < m_prereqInfo.size(); i++)
+	for (i = 0; i < (Int)m_prereqInfo.size(); i++)
 	{
 		m_prereqInfo[i].resolveNames();
 	}
 
 	const Int MAX_BF = 32;
 	const ThingTemplate* tmpls[MAX_BF];
-	for (i = 0; i < m_prereqInfo.size(); i++)
+	for (i = 0; i < (Int)m_prereqInfo.size(); i++)
 	{
 		Int count = m_prereqInfo[i].getAllPossibleBuildFacilityTemplates(tmpls, MAX_BF);
 		for (j = 0; j < count; j++)
@@ -1388,7 +1388,7 @@ Int ThingTemplate::calcCostToBuild( const Player* player) const
 //-------------------------------------------------------------------------------------------------
 Int ThingTemplate::calcTimeToBuild( const Player* player) const
 {
-	Int buildTime = getBuildTime() * LOGICFRAMES_PER_SECOND;
+	Int buildTime = getBuildTime() * static_cast<float>(LOGICFRAMES_PER_SECOND);
 	buildTime *= player->getHandicap()->getHandicap(Handicap::BUILDTIME, this);
 
 	Real factionModifier = 1 + player->getProductionTimeChangePercent( getName() );
@@ -1444,7 +1444,7 @@ Int ThingTemplate::calcTimeToBuild( const Player* player) const
 //-------------------------------------------------------------------------------------------------
 ModuleData* ModuleInfo::friend_getNthData(Int i)
 {
-	if (i >= 0 && i < m_info.size())
+	if (i >= 0 && i < (Int)m_info.size())
 	{
 		// This is kinda naughty, but its necessary.
 		return const_cast<ModuleData*>(m_info[i].second);

@@ -1945,7 +1945,7 @@ void Weapon::setClipPercentFull(Real percent, Bool allowReduction)
 		return;
 
 	Int ammo = REAL_TO_INT_FLOOR(m_template->getClipSize() * percent);
-	if (ammo > m_ammoInClip || (allowReduction && ammo < m_ammoInClip))
+	if (ammo > (Int)m_ammoInClip || (allowReduction && ammo < (Int)m_ammoInClip))
 	{
 		m_ammoInClip = ammo;
 		m_status = m_ammoInClip ? OUT_OF_AMMO : READY_TO_FIRE;
@@ -1974,12 +1974,12 @@ void Weapon::rebuildScatterTargets()
 void Weapon::reloadWithBonus(const Object *sourceObj, const WeaponBonus& bonus, Bool loadInstantly)
 {
 	if (m_template->getClipSize() > 0
-			&& m_ammoInClip == m_template->getClipSize()
+			&& (Int)m_ammoInClip == m_template->getClipSize()
 			&& !sourceObj->isReloadTimeShared())
 		return;	// don't restart our reload delay.
 
 	m_ammoInClip = m_template->getClipSize();
-	if (m_ammoInClip <= 0)
+	if ((Int)m_ammoInClip <= 0)
 		m_ammoInClip = 0x7fffffff;	// 0 == unlimited (or effectively so)
 
 	m_status = RELOADING_CLIP;
@@ -2638,7 +2638,7 @@ Bool Weapon::privateFireWeapon(
 
 			--m_maxShotCount;
 			--m_ammoInClip;	// so we can use the delay between shots on the mine clearing weapon
-			if (m_ammoInClip <= 0 && m_template->getAutoReloadsClip())
+			if ((Int)m_ammoInClip <= 0 && m_template->getAutoReloadsClip())
 			{
 				reloadAmmo(sourceObj);
 				return TRUE;	// reloaded
@@ -2662,14 +2662,14 @@ Bool Weapon::privateFireWeapon(
 
 	DEBUG_ASSERTCRASH(getStatus() != OUT_OF_AMMO, ("Hmm, firing weapon that is OUT_OF_AMMO"));
 	DEBUG_ASSERTCRASH(getStatus() == READY_TO_FIRE, ("Hmm, Weapon is firing more often than should be possible"));
-	DEBUG_ASSERTCRASH(m_ammoInClip > 0, ("Hmm, firing an empty weapon"));
+	DEBUG_ASSERTCRASH((Int)m_ammoInClip > 0, ("Hmm, firing an empty weapon"));
 
 	if (getStatus() != READY_TO_FIRE)
 		return false;
 
 	UnsignedInt now = TheGameLogic->getFrame();
 	Bool reloaded = false;
-	if (m_ammoInClip > 0)
+	if ((Int)m_ammoInClip > 0)
 	{
 		// TheSuperHackers @logic-client-separation helmutbuhler 11/04/2025
 		// barrelCount shouln't depend on Drawable, which belongs to client.
@@ -2723,7 +2723,7 @@ Bool Weapon::privateFireWeapon(
 			m_numShotsForCurBarrel = m_template->getShotsPerBarrel();
 		}
 
-		if (m_ammoInClip <= 0)
+		if ((Int)m_ammoInClip <= 0)
 		{
 			if (m_template->getAutoReloadsClip())
 			{
@@ -2841,7 +2841,7 @@ WeaponStatus Weapon::getStatus() const
 	}
 	if( now >= m_whenWeCanFireAgain )
 	{
-		if (m_ammoInClip > 0)
+		if ((Int)m_ammoInClip > 0)
 			m_status = READY_TO_FIRE;
 		else
 			m_status = OUT_OF_AMMO;
@@ -2922,7 +2922,7 @@ Int Weapon::getPreAttackDelay( const Object *source, const Object *victim ) cons
 	WeaponPrefireType type = m_template->getPrefireType();
 	if( type == PREFIRE_PER_CLIP )
 	{
-		if( m_template->getClipSize() > 0  &&  m_ammoInClip < m_template->getClipSize() )
+		if( m_template->getClipSize() > 0  &&  (Int)m_ammoInClip < m_template->getClipSize() )
 			return 0;// I only delay once a clip, and this is not the first shot
 	}
 	else if( type == PREFIRE_PER_ATTACK )
@@ -3373,7 +3373,8 @@ void Weapon::crc( Xfer *xfer )
 #endif // DEBUG_CRC
 
 	// scatter targets unused
-	UnsignedShort scatterCount = m_scatterTargetsUnused.size();
+	DEBUG_ASSERTCRASH(m_scatterTargetsUnused.size() <= USHRT_MAX, ("size exceeds UnsignedShort"));
+	UnsignedShort scatterCount = static_cast<UnsignedShort>(m_scatterTargetsUnused.size());
 	xfer->xferUnsignedShort( &scatterCount );
 #ifdef DEBUG_CRC
 	if (doLogging)
@@ -3500,7 +3501,8 @@ void Weapon::xfer( Xfer *xfer )
 	xfer->xferInt( &m_numShotsForCurBarrel );
 
 	// scatter targets unused
-	UnsignedShort scatterCount = m_scatterTargetsUnused.size();
+	DEBUG_ASSERTCRASH(m_scatterTargetsUnused.size() <= USHRT_MAX, ("size exceeds UnsignedShort"));
+	UnsignedShort scatterCount = static_cast<UnsignedShort>(m_scatterTargetsUnused.size());
 	xfer->xferUnsignedShort( &scatterCount );
 	Int intData;
 	if( xfer->getXferMode() == XFER_SAVE )

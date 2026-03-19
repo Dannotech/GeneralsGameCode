@@ -123,7 +123,7 @@ int TerrainTextureClass::update(WorldHeightMap *htMap)
 #if 0
 		UnsignedInt cellX, cellY;
 		for (cellX = 0; cellX < surface_desc.Width; cellX++) {
-			for (cellY = 0; cellY < surface_desc.Height; cellY++) {
+			for (cellY = 0; cellY < (Int)surface_desc.Height; cellY++) {
 				UnsignedByte *pBGR = ((UnsignedByte *)locked_rect.pBits)+(cellY*surface_desc.Width+cellX)*2;
 				*((Short*)pBGR) = (((255-2*cellY)>>3)<<10) + ((4*cellX)>>4);
 			}
@@ -244,7 +244,7 @@ int TerrainTextureClass::update(WorldHeightMap *htMap)
 		Int cellX, cellY;
 #if 0
 		for (cellX = 0; cellX < surface_desc.Width; cellX++) {
-			for (cellY = 0; cellY < surface_desc.Height; cellY++) {
+			for (cellY = 0; cellY < (Int)surface_desc.Height; cellY++) {
 				UnsignedByte *pBGR = ((UnsignedByte *)locked_rect.pBits)+(cellY*surface_desc.Width+cellX)*2;
 				*((Short*)pBGR) = (((255-2*cellY)>>3)<<10) + ((4*cellX)>>4);
 			}
@@ -795,7 +795,7 @@ int AlphaEdgeTextureClass::update(WorldHeightMap *htMap)
 #if 1
 		Int cellX, cellY;
 		for (cellX = 0; (UnsignedInt)cellX < surface_desc.Width; cellX++) {
-			for (cellY = 0; cellY < surface_desc.Height; cellY++) {
+			for (cellY = 0; cellY < (Int)surface_desc.Height; cellY++) {
 				UnsignedByte *pBGR = ((UnsignedByte *)locked_rect.pBits)+(cellY*surface_desc.Width+cellX)*4;
 				pBGR[2] = 255-cellY/2;
 				pBGR[0] = cellX/2;

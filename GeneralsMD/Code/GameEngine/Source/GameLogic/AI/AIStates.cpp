@@ -527,7 +527,7 @@ StateReturnType AIRappelState::onEnter()
 		obj->setLayer(layerAtDest);
 
 	AIUpdateInterface *ai = obj->getAI();
-	Real MAX_RAPPEL_RATE = fabs(TheGlobalData->m_gravity) * LOGICFRAMES_PER_SECOND * 2.5f;
+	Real MAX_RAPPEL_RATE = fabs(TheGlobalData->m_gravity) * static_cast<float>(LOGICFRAMES_PER_SECOND) * 2.5f;
 	m_rappelRate = -min(ai->getDesiredSpeed(), MAX_RAPPEL_RATE);
 
 	return STATE_CONTINUE;
@@ -989,7 +989,7 @@ void AIStateMachine::addToGoalPath( const Coord3D *pathPoint)
  */
 const Coord3D *AIStateMachine::getGoalPathPosition( Int i ) const
 {
-	if (i < 0 || i >= m_goalPath.size())
+	if (i < 0 || i >= (Int)m_goalPath.size())
 		return nullptr;
 
 	return &m_goalPath[i];
@@ -1872,7 +1872,7 @@ StateReturnType AIInternalMoveToState::update()
 		ai->setLocomotorGoalPositionOnPath();
 
 	// if our goal has moved, recompute our path
-	if (forceRecompute || TheGameLogic->getFrame() - m_pathTimestamp > MIN_REPATH_TIME)
+	if (forceRecompute || TheGameLogic->getFrame() - m_pathTimestamp > (UnsignedInt)MIN_REPATH_TIME)
 	{
 		if (forceRecompute || !isSamePosition(obj->getPosition(), &m_pathGoalPosition, &m_goalPosition ))
 		{
@@ -2429,7 +2429,7 @@ Bool AIAttackApproachTargetState::computePath()
 
 	// force minimum time between recomputation
 	/// @todo Unify recomputation conditions & account for obj ID so everyone doesn't compute on the same frame (MSB)
-	if (!forceRepath && TheGameLogic->getFrame() - m_approachTimestamp < MIN_RECOMPUTE_TIME)
+	if (!forceRepath && TheGameLogic->getFrame() - m_approachTimestamp < (UnsignedInt)MIN_RECOMPUTE_TIME)
 	{
 		//CRCDEBUG_LOG(("AIAttackApproachTargetState::computePath - bailing because of min time for object %d", getMachineOwner()->getID()));
 		return true;
@@ -2864,7 +2864,7 @@ Bool AIAttackPursueTargetState::computePath()
 
 	// force minimum time between recomputation
 	/// @todo Unify recomputation conditions & account for obj ID so everyone doesn't compute on the same frame (MSB)
-	if (!forceRepath && TheGameLogic->getFrame() - m_approachTimestamp < MIN_RECOMPUTE_TIME)
+	if (!forceRepath && TheGameLogic->getFrame() - m_approachTimestamp < (UnsignedInt)MIN_RECOMPUTE_TIME)
 	{
 		return true;
 	}
@@ -3674,7 +3674,7 @@ StateReturnType AIAttackMoveToState::update()
 		if (m_retryCount<1) return ret;
 		/* check for close enough. */
 		Real distSqr = sqr(owner->getPosition()->x - m_pathGoalPosition.x) + sqr(owner->getPosition()->y-m_pathGoalPosition.y);
-		if (distSqr < sqr(ATTACK_CLOSE_ENOUGH_CELLS*PATHFIND_CELL_SIZE_F)) {
+		if (distSqr < sqr(static_cast<float>(ATTACK_CLOSE_ENOUGH_CELLS)*PATHFIND_CELL_SIZE_F)) {
 			return ret;
 		}
 		DEBUG_LOG(("AIAttackMoveToState::update Distance from goal %f, retrying.", sqrt(distSqr)));

@@ -311,12 +311,6 @@ BOOL CWorldBuilderApp::InitInstance()
 	TheNameKeyGenerator = new NameKeyGenerator;
 	TheNameKeyGenerator->init();
 
-#ifdef _AFXDLL
-	Enable3dControls();			// Call this when using MFC in a shared DLL
-#else
-	Enable3dControlsStatic();	// Call this when linking to MFC statically
-#endif
-
 	// Set the current directory to the app directory.
 	char buf[_MAX_PATH];
 	GetModuleFileName(nullptr, buf, sizeof(buf));

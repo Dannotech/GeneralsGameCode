@@ -335,7 +335,7 @@ void UnicodeString::truncateBy(const Int charCount)
 		{
 			ensureUniqueBufferOfSize(len + 1, true, nullptr, nullptr);
 			size_t count = charCount;
-			if (charCount > len)
+			if (charCount > (Int)len)
 			{
 				count = len;
 			}
@@ -352,7 +352,7 @@ void UnicodeString::truncateTo(const Int maxLength)
 	if (m_data)
 	{
 		const size_t len = wcslen(peek());
-		if (len > maxLength)
+		if ((Int)len > maxLength)
 		{
 			ensureUniqueBufferOfSize(len + 1, true, nullptr, nullptr);
 			peek()[maxLength] = 0;

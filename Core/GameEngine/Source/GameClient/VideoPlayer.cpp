@@ -362,7 +362,7 @@ const Video* VideoPlayer::getVideo( AsciiString movieTitle )
 //============================================================================
 const Video* VideoPlayer::getVideo( Int index )
 {
-	if (index < 0 || index >= mVideosAvailableForPlay.size()) {
+	if (index < 0 || index >= (Int)mVideosAvailableForPlay.size()) {
 		return nullptr;
 	}
 

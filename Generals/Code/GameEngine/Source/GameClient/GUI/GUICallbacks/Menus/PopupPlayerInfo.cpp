@@ -458,8 +458,8 @@ void ResetBattleHonorInsertion()
 }
 void InsertBattleHonor(GameWindow *list, const Image *image, Bool enabled, Int itemData, Int& row, Int& column, UnicodeString text = UnicodeString::TheEmptyString)
 {
-	Int width = MAX_BATTLE_HONOR_IMAGE_WIDTH * (TheDisplay->getWidth() / (Real)DEFAULT_DISPLAY_WIDTH);
-	Int height = MAX_BATTLE_HONOR_IMAGE_HEIGHT * (TheDisplay->getHeight() / (Real)DEFAULT_DISPLAY_HEIGHT);
+	Int width = static_cast<float>(MAX_BATTLE_HONOR_IMAGE_WIDTH) * (TheDisplay->getWidth() / (Real)DEFAULT_DISPLAY_WIDTH);
+	Int height = static_cast<float>(MAX_BATTLE_HONOR_IMAGE_HEIGHT) * (TheDisplay->getHeight() / (Real)DEFAULT_DISPLAY_HEIGHT);
 
 	static Int enabledColor = 0xFFFFFFFF;
 	static Int disabledColor = GameMakeColor(80, 80, 80, 255);
@@ -662,7 +662,7 @@ Int GetFavoriteSide( const PSPlayerStats& stats )
 	Int favorite = 0;
 	for(it =stats.games.begin(); it != stats.games.end(); ++it)
 	{
-		if(it->second >= numGames)
+		if((Int)it->second >= numGames)
 		{
 			numGames = it->second;
 			favorite = it->first;
@@ -861,7 +861,7 @@ void PopulatePlayerInfoWindows( AsciiString parentWindowName )
 		Int favorite = 0;
 		for(it =stats.games.begin(); it != stats.games.end(); ++it)
 		{
-			if(it->second >= numGames)
+			if((Int)it->second >= numGames)
 			{
 				numGames = it->second;
 				favorite = it->first;
@@ -1078,7 +1078,7 @@ void HandlePersistentStorageResponses()
 						Int favorite = 0;
 						for(it =resp.player.games.begin(); it != resp.player.games.end(); ++it)
 						{
-							if(it->second >= numGames)
+							if((Int)it->second >= numGames)
 							{
 								numGames = it->second;
 								favorite = it->first;
@@ -1132,7 +1132,7 @@ void HandlePersistentStorageResponses()
 							Int favorite = 0;
 							for(it = resp.player.games.begin(); it != resp.player.games.end(); ++it)
 							{
-								if(it->second >= numGames)
+								if((Int)it->second >= numGames)
 								{
 									numGames = it->second;
 									favorite = it->first;
@@ -1230,19 +1230,6 @@ void GameSpyPlayerInfoOverlayInit( WindowLayout *layout, void *userData )
 	CustomMatchPreferences pref;
 	GadgetCheckBoxSetChecked(checkBoxAsianFont,!pref.getDisallowAsianText());
 	GadgetCheckBoxSetChecked(checkBoxNonAsianFont,!pref.getDisallowNonAsianText());
-
-	OSVERSIONINFO	osvi;
-	osvi.dwOSVersionInfoSize=sizeof(OSVERSIONINFO);
-	if (GetVersionEx(&osvi))
-	{	//check if we're running Win9x variant since they may need different fonts
-		if (osvi.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS)
-		{
-			if (checkBoxAsianFont)
-				checkBoxAsianFont->winEnable(FALSE);
-			if (checkBoxNonAsianFont)
-				checkBoxNonAsianFont->winEnable(FALSE);
-		}
-	}
 
 	//TheWindowManager->winSetModal(parent);
 }

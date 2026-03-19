@@ -170,7 +170,7 @@ void StructureToppleUpdate::beginStructureTopple(const DamageInfo *damageInfo)
 		m_delayBurstLocation.z = TheTerrainLogic->getGroundHeight(m_delayBurstLocation.x, m_delayBurstLocation.y);
 
 		doToppleStartFX(building, damageInfo);
-		m_nextBurstFrame = now + GameClientRandomValue(d->m_minToppleBurstDelay, d->m_maxToppleBurstDelay);
+		m_nextBurstFrame = (Int)now + GameClientRandomValue(d->m_minToppleBurstDelay, d->m_maxToppleBurstDelay);
 
 		m_toppleState = TOPPLESTATE_WAITINGFORTOPPLESTART;
 
@@ -217,10 +217,10 @@ UpdateSleepTime StructureToppleUpdate::update()
 	// when it starts toppling over.
 	if (m_toppleState == TOPPLESTATE_WAITINGFORTOPPLESTART) {
 		UnsignedInt now = TheGameLogic->getFrame();
-		if (now >= m_nextBurstFrame) {
+		if (now >= (UnsignedInt)m_nextBurstFrame) {
 			doToppleDelayBurstFX();
 			// This uses a game client random value because the delay bursts are purely visual and aural effects.
-			m_nextBurstFrame = now + GameClientRandomValue(d->m_minToppleBurstDelay, d->m_maxToppleBurstDelay);
+			m_nextBurstFrame = (Int)now + GameClientRandomValue(d->m_minToppleBurstDelay, d->m_maxToppleBurstDelay);
 		}
 		if (now >= m_toppleFrame) {
 			m_toppleState = TOPPLESTATE_TOPPLING;
@@ -265,10 +265,10 @@ UpdateSleepTime StructureToppleUpdate::update()
 			m_toppleFrame = TheGameLogic->getFrame();
 		}
 
-		if (now >= m_nextBurstFrame) {
+		if (now >= (UnsignedInt)m_nextBurstFrame) {
 			doToppleDelayBurstFX();
 			// This uses a game client random value because the delay bursts are purely visual and aural effects.
-			m_nextBurstFrame = now + GameClientRandomValue(d->m_minToppleBurstDelay, d->m_maxToppleBurstDelay);
+			m_nextBurstFrame = (Int)now + GameClientRandomValue(d->m_minToppleBurstDelay, d->m_maxToppleBurstDelay);
 		}
 
 		Object *building = getObject();

@@ -161,7 +161,7 @@ UpdateSleepTime AutoDepositUpdate::update()
 			return UPDATE_SLEEP_NONE;
 
 		// makes sure that buildings under construction do not get a bonus CCB
-		if( getObject()->getConstructionPercent() != CONSTRUCTION_COMPLETE )
+		if( getObject()->getConstructionPercent() != static_cast<float>(CONSTRUCTION_COMPLETE) )
 			return UPDATE_SLEEP_NONE;
 
 		int moneyAmount = modData->m_depositAmount + getUpgradedSupplyBoost();

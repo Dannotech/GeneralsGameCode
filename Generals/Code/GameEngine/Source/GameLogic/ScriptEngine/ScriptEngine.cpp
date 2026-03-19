@@ -6267,7 +6267,7 @@ void ScriptEngine::executeScript( Script *pScript )
 	Int delaySeconds = pScript->getDelayEvalSeconds();
 
 	if (delaySeconds>0) {
-		pScript->setFrameToEvaluate(TheGameLogic->getFrame()+delaySeconds*LOGICFRAMES_PER_SECOND);
+		pScript->setFrameToEvaluate(TheGameLogic->getFrame()+(UnsignedInt)delaySeconds*LOGICFRAMES_PER_SECOND);
 	}
 #ifdef DEBUG_LOGGING
 #ifdef SPECIAL_SCRIPT_PROFILING
@@ -8148,7 +8148,8 @@ void ScriptEngine::xfer( Xfer *xfer )
 	xfer->xferVersion( &version, currentVersion );
 
 	// sequential script count and data
-	UnsignedShort sequentialScriptCount = m_sequentialScripts.size();
+	DEBUG_ASSERTCRASH(m_sequentialScripts.size() <= USHRT_MAX, ("size exceeds UnsignedShort"));
+	UnsignedShort sequentialScriptCount = static_cast<UnsignedShort>(m_sequentialScripts.size());
 	xfer->xferUnsignedShort( &sequentialScriptCount );
 	SequentialScript *sequentialScript;
 	if( xfer->getXferMode() == XFER_SAVE )
@@ -8274,7 +8275,8 @@ void ScriptEngine::xfer( Xfer *xfer )
 	xfer->xferInt( &m_closeWindowTimer );
 
 	// named objects
-	UnsignedShort namedObjectsCount = m_namedObjects.size();
+	DEBUG_ASSERTCRASH(m_namedObjects.size() <= USHRT_MAX, ("size exceeds UnsignedShort"));
+	UnsignedShort namedObjectsCount = static_cast<UnsignedShort>(m_namedObjects.size());
 	xfer->xferUnsignedShort( &namedObjectsCount );
 	AsciiString namedObjectName;
 	Object *obj;
@@ -8464,7 +8466,8 @@ void ScriptEngine::xfer( Xfer *xfer )
 	{
 
 		// number of entries in named reveals
-		UnsignedShort namedRevealCount = m_namedReveals.size();
+		DEBUG_ASSERTCRASH(m_namedReveals.size() <= USHRT_MAX, ("size exceeds UnsignedShort"));
+		UnsignedShort namedRevealCount = static_cast<UnsignedShort>(m_namedReveals.size());
 		xfer->xferUnsignedShort( &namedRevealCount );
 
 		// named reveal data
@@ -8528,7 +8531,8 @@ void ScriptEngine::xfer( Xfer *xfer )
 		}
 
 		// all object type lists size
-		UnsignedShort allObjectTypesCount = m_allObjectTypeLists.size();
+		DEBUG_ASSERTCRASH(m_allObjectTypeLists.size() <= USHRT_MAX, ("size exceeds UnsignedShort"));
+		UnsignedShort allObjectTypesCount = static_cast<UnsignedShort>(m_allObjectTypeLists.size());
 		xfer->xferUnsignedShort( &allObjectTypesCount );
 
 		// all object type lists data

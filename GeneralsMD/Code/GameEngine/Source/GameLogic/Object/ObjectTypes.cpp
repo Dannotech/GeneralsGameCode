@@ -154,7 +154,8 @@ void ObjectTypes::xfer(Xfer *xfer)
 	xfer->xferAsciiString( &m_listName );
 
 	// size of object types vector
-	UnsignedShort objectTypesCount = m_objectTypes.size();
+	DEBUG_ASSERTCRASH(m_objectTypes.size() <= USHRT_MAX, ("size exceeds UnsignedShort"));
+	UnsignedShort objectTypesCount = static_cast<UnsignedShort>(m_objectTypes.size());
 	xfer->xferUnsignedShort( &objectTypesCount );
 
 	// object types data

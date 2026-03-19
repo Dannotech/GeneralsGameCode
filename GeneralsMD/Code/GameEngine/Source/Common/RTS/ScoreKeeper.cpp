@@ -421,7 +421,8 @@ void ScoreKeeper::xferObjectCountMap( Xfer *xfer, ObjectCountMap *map )
 	xfer->xferVersion( &version, currentVersion );
 
 	// size of the map
-	UnsignedShort mapSize = map->size();
+	DEBUG_ASSERTCRASH(map->size() <= USHRT_MAX, ("size exceeds UnsignedShort"));
+	UnsignedShort mapSize = static_cast<UnsignedShort>(map->size());
 	xfer->xferUnsignedShort( &mapSize );
 
 	// map data

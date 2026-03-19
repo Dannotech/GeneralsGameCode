@@ -1700,7 +1700,7 @@ GameSlot *lSlot = game->getSlot(game->getLocalSlotNum());
 		Int favorite = 0;
 		for(it =stats.games.begin(); it != stats.games.end(); ++it)
 		{
-			if(it->second >= numGames)
+			if((Int)it->second >= numGames)
 			{
 				numGames = it->second;
 				favorite = it->first;

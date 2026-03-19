@@ -154,11 +154,11 @@ CSceneLightDialog::OnInitDialog (void)
 		::SetDlgItemFloat (m_hWnd, IDC_DISTANCE_EDIT, distance);
 
 		// Set-up the spin controls
-		m_DistanceSpin.SetRange (0, 1000000L);
+		m_DistanceSpin.SetRange (0, (short)1000000L);
 		m_DistanceSpin.SetPos ((distance * 100));
-		m_StartAttenSpin.SetRange (0, 1000000L);
+		m_StartAttenSpin.SetRange (0, (short)1000000L);
 		m_StartAttenSpin.SetPos ((start * 100));
-		m_EndAttenSpin.SetRange (0, 1000000L);
+		m_EndAttenSpin.SetRange (0, (short)1000000L);
 		m_EndAttenSpin.SetPos ((end * 100));
 
 		// Setup the slider control

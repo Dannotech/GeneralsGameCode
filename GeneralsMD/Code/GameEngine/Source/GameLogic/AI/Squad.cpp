@@ -209,7 +209,8 @@ void Squad::xfer( Xfer *xfer )
 	xfer->xferVersion( &version, currentVersion );
 
 	// length of object ID list
-	UnsignedShort objectCount = m_objectIDs.size();
+	DEBUG_ASSERTCRASH(m_objectIDs.size() <= USHRT_MAX, ("size exceeds UnsignedShort"));
+	UnsignedShort objectCount = static_cast<UnsignedShort>(m_objectIDs.size());
 	xfer->xferUnsignedShort( &objectCount );
 
 	// object id elements

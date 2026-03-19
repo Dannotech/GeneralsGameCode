@@ -87,7 +87,7 @@ int DebugIOCon::Read(char *buf, int maxchar)
   if (m_inputRead)
   {
     int numRead;
-    if (maxchar>m_inputUsed-m_inputRead)
+    if (maxchar>(int)(m_inputUsed-m_inputRead))
     {
       // return all
       numRead=m_inputUsed-m_inputRead;
@@ -169,7 +169,7 @@ int DebugIOCon::Read(char *buf, int maxchar)
 
   SMALL_RECT r;
   r.Left=r.Top=r.Bottom=0; r.Right=info.dwSize.X-1;
-  WriteConsoleOutput(h,ci+(m_inputUsed<=info.dwSize.X?0:m_inputUsed-info.dwSize.X),
+  WriteConsoleOutput(h,ci+((int)m_inputUsed<=info.dwSize.X?0:m_inputUsed-info.dwSize.X),
                       srcSize,srcCoord,&r);
 
   // return data now?

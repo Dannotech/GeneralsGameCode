@@ -255,7 +255,7 @@ UpdateSleepTime MinefieldBehavior::update()
 	if (m_draining)
 	{
 		DamageInfo damageInfo;
-		damageInfo.in.m_amount = (obj->getBodyModule()->getMaxHealth() * d->m_healthPercentToDrainPerSecond) / LOGICFRAMES_PER_SECOND;
+		damageInfo.in.m_amount = (obj->getBodyModule()->getMaxHealth() * d->m_healthPercentToDrainPerSecond) / static_cast<float>(LOGICFRAMES_PER_SECOND);
 		damageInfo.in.m_sourceID = obj->getID();
 		damageInfo.in.m_damageType = DAMAGE_UNRESISTABLE;
 		damageInfo.in.m_deathType = DEATH_NORMAL;
@@ -462,13 +462,13 @@ void MinefieldBehavior::onDamage( DamageInfo *damageInfo )
 			damageInfo->in.m_damageType == DAMAGE_HEALING ?
 			REAL_TO_INT_FLOOR(virtualMinesExpectedF) :
 			REAL_TO_INT_CEIL(virtualMinesExpectedF);
-		if (virtualMinesExpected > d->m_numVirtualMines)
+		if (virtualMinesExpected > (Int)d->m_numVirtualMines)
 			virtualMinesExpected = d->m_numVirtualMines;
-		if (m_virtualMinesRemaining < virtualMinesExpected)
+		if ((Int)m_virtualMinesRemaining < virtualMinesExpected)
 		{
 			m_virtualMinesRemaining = virtualMinesExpected;
 		}
-		else if (m_virtualMinesRemaining > virtualMinesExpected)
+		else if ((Int)m_virtualMinesRemaining > virtualMinesExpected)
 		{
 			if (m_draining &&
 						damageInfo->in.m_sourceID == getObject()->getID() &&

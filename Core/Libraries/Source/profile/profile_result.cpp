@@ -219,10 +219,10 @@ void ProfileResultFileDOT::WriteResults()
   fprintf(f,"digraph G { rankdir=\"LR\";\n");
   fprintf(f,"node [shape=box, fontname=Arial]\n");
   fprintf(f,"edge [arrowhead=%s, labelfontname=Arial, labelfontsize=10, labelangle=0, labelfontcolor=blue]\n",
-    active>m_foldThreshold?"closed":"none");
+    (int)active>m_foldThreshold?"closed":"none");
 
   // fold or not?
-  if (active>m_foldThreshold)
+  if ((int)active>m_foldThreshold)
   {
     // folding version
 

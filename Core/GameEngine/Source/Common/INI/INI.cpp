@@ -1979,7 +1979,7 @@ Bool INI::isEndOfBlock( char *bufferToCheck )
 		++tempBuff;
 	}
 
-	if (strlen(tempBuff) > endStringLength) {
+	if ((int)strlen(tempBuff) > endStringLength) {
 		restoreChar = tempBuff[endStringLength];
 		tempBuff[endStringLength] = 0;
 

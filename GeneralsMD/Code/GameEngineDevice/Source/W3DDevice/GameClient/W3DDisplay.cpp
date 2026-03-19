@@ -1905,7 +1905,7 @@ AGAIN:
 					Int height = TheDisplay->getHeight() * .9;
 
 					Int width;
-					if( displayString->getWidth() > TheDisplay->getWidth() )
+					if( displayString->getWidth() > (Int)TheDisplay->getWidth() )
 						width = 20;
 					else
 						width = ( TheDisplay->getWidth() - displayString->getWidth() ) / 2;

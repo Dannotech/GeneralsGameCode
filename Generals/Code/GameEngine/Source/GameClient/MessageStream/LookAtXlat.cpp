@@ -331,8 +331,8 @@ GameMessageDisposition LookAtTranslator::translateGameMessage(const GameMessage 
 
 			m_currentPos = msg->getArgument( 0 )->pixel;
 
-			UnsignedInt height = TheDisplay->getHeight();
-			UnsignedInt width  = TheDisplay->getWidth();
+			Int height = (Int)TheDisplay->getHeight();
+			Int width  = (Int)TheDisplay->getWidth();
 
 			if (TheInGameUI->getInputEnabled() == FALSE) {
 				// We don't care how we're scrolling, just stop.
@@ -493,8 +493,8 @@ GameMessageDisposition LookAtTranslator::translateGameMessage(const GameMessage 
 					break;
 				case SCROLL_SCREENEDGE:
 					{
-						UnsignedInt height = TheDisplay->getHeight();
-						UnsignedInt width  = TheDisplay->getWidth();
+						Int height = (Int)TheDisplay->getHeight();
+						Int width  = (Int)TheDisplay->getWidth();
 						if (m_currentPos.y < edgeScrollSize)
 						{
 							offset.y -= TheGlobalData->m_verticalScrollSpeedFactor * fpsRatio * SCROLL_AMT * TheGlobalData->m_keyboardScrollFactor;

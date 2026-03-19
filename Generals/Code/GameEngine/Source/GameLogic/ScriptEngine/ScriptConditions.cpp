@@ -992,7 +992,7 @@ Bool ScriptConditions::evaluateIsBuildingEmpty( Parameter *pItemParm )
 	if (!contain) {
 		return false;
 	}
-	if (contain->getContainCount() > 0) {
+	if ((Int)contain->getContainCount() > 0) {
 		return false;
 	}
 	return true;
@@ -1805,7 +1805,7 @@ Bool ScriptConditions::evaluatePlayerHasComparisonValueExcessPower(Parameter *pP
 Bool ScriptConditions::evaluateSkirmishSpecialPowerIsReady(Parameter *pSkirmishPlayerParm, Parameter *pPower)
 {
 	if (pPower->getInt() == -1) return false;
-	if (pPower->getInt()>0 && pPower->getInt()>TheGameLogic->getFrame()) {
+	if (pPower->getInt()>0 && pPower->getInt()>(Int)TheGameLogic->getFrame()) {
 		return false;
 	}
 	Int nextFrame = TheGameLogic->getFrame() + 10*LOGICFRAMES_PER_SECOND;
@@ -1887,7 +1887,7 @@ Bool ScriptConditions::evaluateUnitHasEmptied(Parameter *pUnitParm)
 	}
 
 	ContainModuleInterface *cmi = object->getContain();
-	Int numPeeps = cmi ? cmi->getContainCount() : 0;
+	Int numPeeps = cmi ? (Int)cmi->getContainCount() : 0;
 
 	UnsignedInt frameNum = TheGameLogic->getFrame();
 
@@ -2320,7 +2320,7 @@ Bool ScriptConditions::evaluateSkirmishPlayerHasComparisonGarrisoned(Parameter *
 					continue;
 				}
 
-				if (cmi->isGarrisonable() && cmi->getContainCount() > 0) {
+				if (cmi->isGarrisonable() && (Int)cmi->getContainCount() > 0) {
 					++numGarrisonedBuildings;
 				}
 			}

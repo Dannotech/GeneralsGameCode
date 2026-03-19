@@ -99,7 +99,7 @@ DDSFileClass::DDSFileClass(const char* name,unsigned reduction_factor)
 	if (MipLevels==0) MipLevels=1;
 
 	//Adjust the reduction factor to keep textures above some minimum dimensions
-	if (MipLevels <= WW3D::Get_Texture_Min_Dimension())
+	if ((int)MipLevels <= WW3D::Get_Texture_Min_Dimension())
 		ReductionFactor=0;
 	else
 	{	int mipToDrop=MipLevels-WW3D::Get_Texture_Min_Dimension();

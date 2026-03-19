@@ -1602,11 +1602,11 @@ public:
 				Int needed = clipSize - remaining;
 				rt = (rt * needed) / clipSize;
 			}
-			if (rt > m_reloadTime)
-				m_reloadTime = rt;
+			if (rt > (Int)m_reloadTime)
+				m_reloadTime = (UnsignedInt)rt;
 		}
 
-		if (m_reloadTime < 1)
+		if (m_reloadTime < 1u)
 			m_reloadTime = 1;
 		m_reloadDoneFrame = m_reloadTime + TheGameLogic->getFrame();
 		return STATE_CONTINUE;

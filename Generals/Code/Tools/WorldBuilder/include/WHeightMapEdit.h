@@ -39,7 +39,9 @@ public:
 	~CProcessNode(void) { };
 };
 
+#ifndef MAX_TILES_PER_CLASS
 #define MAX_TILES_PER_CLASS 100
+#endif
 /// Struct in memory.
 typedef struct
 {
@@ -57,6 +59,7 @@ typedef struct
 } TGlobalTextureClass;
 
 
+#undef NUM_ALPHA_TILES
 #define NUM_ALPHA_TILES 8
 
 class WorldHeightMapEdit : public WorldHeightMap

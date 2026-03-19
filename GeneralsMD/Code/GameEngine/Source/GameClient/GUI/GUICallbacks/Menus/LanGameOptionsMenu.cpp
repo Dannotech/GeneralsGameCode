@@ -300,7 +300,7 @@ void StartPressed()
 			}
 		}
 	}
-	if (numRandom + teams.size() < TheGlobalData->m_netMinPlayers)
+	if ((int)(numRandom + teams.size()) < TheGlobalData->m_netMinPlayers)
 	{
 		if (TheLAN->AmIHost())
 		{

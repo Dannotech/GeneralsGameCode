@@ -182,7 +182,7 @@ void AISkirmishPlayer::processBaseBuilding()
 			if (info->getObjectID()==INVALID_ID && info->getObjectTimestamp()>0) {
 				// this object was built at some time, and got destroyed at or near objectTimestamp.
 				// Wait a few seconds before initiating a rebuild.
-				if (info->getObjectTimestamp()+TheAI->getAiData()->m_rebuildDelaySeconds*LOGICFRAMES_PER_SECOND > TheGameLogic->getFrame()) {
+				if ((Int)info->getObjectTimestamp()+(Int)TheAI->getAiData()->m_rebuildDelaySeconds*LOGICFRAMES_PER_SECOND > (Int)TheGameLogic->getFrame()) {
 					continue;
 				}	else {
 					DEBUG_LOG(("Enabling rebuild for %s", info->getTemplateName().str()));
@@ -257,10 +257,10 @@ void AISkirmishPlayer::processBaseBuilding()
 				bldgInfo->decrementNumRebuilds();
 
 				m_readyToBuildStructure = false;
-				m_structureTimer = TheAI->getAiData()->m_structureSeconds*LOGICFRAMES_PER_SECOND;
-				if (m_player->getMoney()->countMoney() < TheAI->getAiData()->m_resourcesPoor) {
+				m_structureTimer = TheAI->getAiData()->m_structureSeconds*static_cast<float>(LOGICFRAMES_PER_SECOND);
+				if ((Int)m_player->getMoney()->countMoney() < TheAI->getAiData()->m_resourcesPoor) {
 					m_structureTimer = m_structureTimer/TheAI->getAiData()->m_structuresPoorMod;
-				}	else if (m_player->getMoney()->countMoney() > TheAI->getAiData()->m_resourcesWealthy) {
+				}	else if ((Int)m_player->getMoney()->countMoney() > TheAI->getAiData()->m_resourcesWealthy) {
 					m_structureTimer = m_structureTimer/TheAI->getAiData()->m_structuresWealthyMod;
 				}
 				m_frameLastBuildingBuilt = TheGameLogic->getFrame();
@@ -270,15 +270,15 @@ void AISkirmishPlayer::processBaseBuilding()
 #else
 			// force delay between rebuilds
 			Int framesToBuild = bldgPlan->calcTimeToBuild(m_player);
-			if (TheGameLogic->getFrame() - m_frameLastBuildingBuilt < framesToBuild)
+			if ((Int)TheGameLogic->getFrame() - m_frameLastBuildingBuilt < framesToBuild)
 			{
-				m_buildDelay = framesToBuild - (TheGameLogic->getFrame() - m_frameLastBuildingBuilt);
+				m_buildDelay = framesToBuild - ((Int)TheGameLogic->getFrame() - m_frameLastBuildingBuilt);
 				return;
 			}	else {
 				// building is missing, (re)build it
 				// deduct money to build, if we have it
 				Int cost = bldgPlan->calcCostToBuild( m_player );
-				if (m_player->getMoney()->countMoney() >= cost)
+				if ((Int)m_player->getMoney()->countMoney() >= cost)
 				{
 					// we have the money, deduct it
 					m_player->getMoney()->withdraw( cost );
@@ -292,10 +292,10 @@ void AISkirmishPlayer::processBaseBuilding()
 						bldgInfo->decrementNumRebuilds();
 
 						m_readyToBuildStructure = false;
-						m_structureTimer = TheAI->getAiData()->m_structureSeconds*LOGICFRAMES_PER_SECOND;
-						if (m_player->getMoney()->countMoney() < TheAI->getAiData()->m_resourcesPoor) {
+						m_structureTimer = TheAI->getAiData()->m_structureSeconds*static_cast<float>(LOGICFRAMES_PER_SECOND);
+						if ((Int)m_player->getMoney()->countMoney() < TheAI->getAiData()->m_resourcesPoor) {
 							m_structureTimer = m_structureTimer/TheAI->getAiData()->m_structuresPoorMod;
-						}	else if (m_player->getMoney()->countMoney() > TheAI->getAiData()->m_resourcesWealthy) {
+						}	else if ((Int)m_player->getMoney()->countMoney() > TheAI->getAiData()->m_resourcesWealthy) {
 							m_structureTimer = m_structureTimer/TheAI->getAiData()->m_structuresWealthyMod;
 						}
 						m_frameLastBuildingBuilt = TheGameLogic->getFrame();

@@ -161,8 +161,8 @@ void BuildAssistant::reset()
 
 }
 
-static const Real FRAMES_TO_ALLOW_SCAFFOLD = LOGICFRAMES_PER_SECOND * 1.5f;
-static const Real TOTAL_FRAMES_TO_SELL_OBJECT = LOGICFRAMES_PER_SECOND * 3.0f;
+static const Real FRAMES_TO_ALLOW_SCAFFOLD = static_cast<float>(LOGICFRAMES_PER_SECOND) * 1.5f;
+static const Real TOTAL_FRAMES_TO_SELL_OBJECT = static_cast<float>(LOGICFRAMES_PER_SECOND) * 3.0f;
 //-------------------------------------------------------------------------------------------------
 /** Update phase for the build assistant */
 //-------------------------------------------------------------------------------------------------
@@ -1296,7 +1296,7 @@ CanMakeType BuildAssistant::canMakeUnit( Object *builder, const ThingTemplate *w
 	// make sure we have enough money to build this
 	Player *player = builder->getControllingPlayer();
 	Money *money = player->getMoney();
-	if( whatToBuild->calcCostToBuild( player ) > money->countMoney() )
+	if( whatToBuild->calcCostToBuild( player ) > (Int)money->countMoney() )
 		return CANMAKE_NO_MONEY;
 
 	// make sure we're not maxed out for this type of unit.
@@ -1306,7 +1306,7 @@ CanMakeType BuildAssistant::canMakeUnit( Object *builder, const ThingTemplate *w
 		const Bool ignoreUnderConstruction = FALSE;// Most people don't want to count under construction, but I totally do
 		Int existingCount;
 		player->countObjectsByThingTemplate(1, &whatToBuild, ignoreDead, &existingCount, ignoreUnderConstruction);
-		if (existingCount >= whatToBuild->getMaxSimultaneousOfType())
+		if (existingCount >= (Int)whatToBuild->getMaxSimultaneousOfType())
 			return CANMAKE_MAXED_OUT_FOR_PLAYER;
 
 		// also check objects that are in production

@@ -574,7 +574,8 @@ void BoneFXUpdate::xfer( Xfer *xfer )
 	UpdateModule::xfer( xfer );
 
 	// particle system vector count and data
-	UnsignedShort particleSystemCount = m_particleSystemIDs.size();
+	DEBUG_ASSERTCRASH(m_particleSystemIDs.size() <= USHRT_MAX, ("size exceeds UnsignedShort"));
+	UnsignedShort particleSystemCount = static_cast<UnsignedShort>(m_particleSystemIDs.size());
 	xfer->xferUnsignedShort( &particleSystemCount );
 	ParticleSystemID systemID;
 	if( xfer->getXferMode() == XFER_SAVE )

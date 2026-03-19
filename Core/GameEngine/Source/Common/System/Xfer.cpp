@@ -372,7 +372,8 @@ void Xfer::xferSTLObjectIDVector( std::vector<ObjectID> *objectIDVectorData )
 	xferVersion( &version, currentVersion );
 
 	// xfer the count of the vector
-	UnsignedShort listCount = objectIDVectorData->size();
+	DEBUG_ASSERTCRASH(objectIDVectorData->size() <= USHRT_MAX, ("size exceeds UnsignedShort"));
+	UnsignedShort listCount = static_cast<UnsignedShort>(objectIDVectorData->size());
 	xferUnsignedShort( &listCount );
 
 	// xfer vector data
@@ -439,7 +440,8 @@ void Xfer::xferSTLObjectIDList( std::list< ObjectID > *objectIDListData )
 	xferVersion( &version, currentVersion );
 
 	// xfer the count of the list
-	UnsignedShort listCount = objectIDListData->size();
+	DEBUG_ASSERTCRASH(objectIDListData->size() <= USHRT_MAX, ("size exceeds UnsignedShort"));
+	UnsignedShort listCount = static_cast<UnsignedShort>(objectIDListData->size());
 	xferUnsignedShort( &listCount );
 
 	// xfer list data
@@ -505,7 +507,8 @@ void Xfer::xferSTLIntList( std::list< Int > *intListData )
 	xferVersion( &version, currentVersion );
 
 	// xfer the count of the list
-	UnsignedShort listCount = intListData->size();
+	DEBUG_ASSERTCRASH(intListData->size() <= USHRT_MAX, ("size exceeds UnsignedShort"));
+	UnsignedShort listCount = static_cast<UnsignedShort>(intListData->size());
 	xferUnsignedShort( &listCount );
 
 	// xfer list data
@@ -619,7 +622,8 @@ void Xfer::xferScienceVec( ScienceVec *scienceVec )
 	xferVersion( &version, currentVersion );
 
 	// count of vector
-	UnsignedShort count = scienceVec->size();
+	DEBUG_ASSERTCRASH(scienceVec->size() <= USHRT_MAX, ("size exceeds UnsignedShort"));
+	UnsignedShort count = static_cast<UnsignedShort>(scienceVec->size());
 	xferUnsignedShort( &count );
 
 	if( getXferMode() == XFER_SAVE )

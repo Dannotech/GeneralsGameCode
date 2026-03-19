@@ -2608,7 +2608,7 @@ Bool WorldHeightMapEdit::adjustForTiling( TCliffInfo &cliffInfo, Real textureWid
 	}
 
 
-	Real uBorder = TEX_PER_CELL * 0.5;
+	Real uBorder = (Real)(TEX_PER_CELL * 0.5);
 	if (minU>=uBorder && maxU<textureWidth-uBorder) return true;
 	if (minU>=-delta && maxU<= textureWidth+delta) {
 		if (cliffInfo.u0<uBorder) cliffInfo.u0 = 0;
@@ -3000,7 +3000,7 @@ void WorldHeightMapEdit::updateForAdjacentCliffs(Int xIndex, Int yIndex,
 		Real smallU = TEX_PER_CELL/10.0f;
 		Real cliffAvgU;
 		Real tmpAvgU;
-		Real minUDelta = TEX_PER_CELL*0.7;
+		Real minUDelta = TEX_PER_CELL*0.7f;
 		Real uDelta;
 		// Adjust for "vertical" edges
 		if (lockCount==2) {
@@ -3320,7 +3320,7 @@ Int WorldHeightMapEdit::getNumBoundaries(void) const
 
 void WorldHeightMapEdit::getBoundary(Int ndx, ICoord2D* border) const
 {
-	if (!border || ndx < 0 || ndx >= m_boundaries.size()) {
+	if (!border || ndx < 0 || ndx >= (int)m_boundaries.size()) {
 		DEBUG_CRASH(("Invalid border request. jkmcd"));
 		return;
 	}
@@ -3340,7 +3340,7 @@ void WorldHeightMapEdit::addBoundary(ICoord2D* boundaryToAdd)
 
 void WorldHeightMapEdit::changeBoundary(Int ndx, ICoord2D *border)
 {
-	if (!border || ndx < 0 || ndx >= m_boundaries.size()) {
+	if (!border || ndx < 0 || ndx >= (int)m_boundaries.size()) {
 		DEBUG_CRASH(("Invalid border change request. jkmcd"));
 		return;
 	}

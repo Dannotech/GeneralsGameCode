@@ -189,8 +189,8 @@ Bool MapPreview::mapPreviewToWorld(const ICoord2D *radar, Coord3D *world)
 	WorldHeightMapEdit *pMap = pDoc->GetHeightMap();
 	Real xSample, ySample;
 
-	xSample = INT_TO_REAL(pMap->getXExtent() - (2 * pMap->getBorderSize())) / MAP_PREVIEW_WIDTH;
-	ySample = INT_TO_REAL(pMap->getYExtent() - (2 * pMap->getBorderSize())) / MAP_PREVIEW_HEIGHT;
+	xSample = INT_TO_REAL(pMap->getXExtent() - (2 * pMap->getBorderSize())) / static_cast<float>(MAP_PREVIEW_WIDTH);
+	ySample = INT_TO_REAL(pMap->getYExtent() - (2 * pMap->getBorderSize())) / static_cast<float>(MAP_PREVIEW_HEIGHT);
 	// translate to world
 	world->x = x * xSample + pMap->getBorderSize();
 	world->y = y * ySample + pMap->getBorderSize();

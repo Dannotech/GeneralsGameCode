@@ -415,7 +415,7 @@ void RTS3DScene::Visibility_Check(CameraClass * camera)
 	m_numNonOccluderOrOccludee=0;
 
 	Int currentFrame = TheGameLogic ? TheGameLogic->getFrame() : 0;
-	if (currentFrame <= TheGlobalData->m_defaultOcclusionDelay)
+	if (currentFrame <= (Int)TheGlobalData->m_defaultOcclusionDelay)
 		currentFrame = TheGlobalData->m_defaultOcclusionDelay+1;	//make sure occlusion is enabled when game starts (frame 0).
 
 	if (ShaderClass::Is_Backface_Culling_Inverted())
@@ -506,7 +506,7 @@ void RTS3DScene::Visibility_Check(CameraClass * camera)
 							}
 							else if (draw->getObject() &&
 									(draw->isKindOf(KINDOF_SCORE) || draw->isKindOf(KINDOF_SCORE_CREATE) || draw->isKindOf(KINDOF_SCORE_DESTROY) || draw->isKindOf(KINDOF_MP_COUNT_FOR_VICTORY)) &&
-									(draw->getObject()->getSafeOcclusionFrame()) <= currentFrame && m_numPotentialOccludees < TheGlobalData->m_maxVisibleOccludeeObjects)
+									(Int)(draw->getObject()->getSafeOcclusionFrame()) <= currentFrame && m_numPotentialOccludees < TheGlobalData->m_maxVisibleOccludeeObjects)
 							{
 								//object which could be occluded but still needs to be visible.
 								//We process translucent units twice (also in m_translucentObjectsBuffer) because we need to see them when occluded.
@@ -1907,7 +1907,7 @@ void RTS3DScene::Visibility_Check(CameraClass * camera)
 
 	Int currentFrame=0;
 	if (TheGameLogic) currentFrame = TheGameLogic->getFrame();
-	if (currentFrame <= TheGlobalData->m_defaultOcclusionDelay)
+	if (currentFrame <= (Int)TheGlobalData->m_defaultOcclusionDelay)
 		currentFrame = TheGlobalData->m_defaultOcclusionDelay+1;	//make sure occlusion is enabled when game starts (frame 0).
 
 
@@ -2000,7 +2000,7 @@ void RTS3DScene::Visibility_Check(CameraClass * camera)
 							else
 							if (draw->getObject() &&
 									(draw->isKindOf(KINDOF_SCORE) || draw->isKindOf(KINDOF_SCORE_CREATE) || draw->isKindOf(KINDOF_SCORE_DESTROY) || draw->isKindOf(KINDOF_MP_COUNT_FOR_VICTORY)) &&
-									(draw->getObject()->getSafeOcclusionFrame()) <= currentFrame && m_numPotentialOccludees < TheGlobalData->m_maxVisibleOccludeeObjects)
+									(Int)(draw->getObject()->getSafeOcclusionFrame()) <= currentFrame && m_numPotentialOccludees < TheGlobalData->m_maxVisibleOccludeeObjects)
 							{	//object which could be occluded but still needs to be visible.
 								//We process transucent units twice (also in m_translucentObjectsBuffer) because we need to see them when occluded.
 								m_potentialOccludees[m_numPotentialOccludees++]=robj;

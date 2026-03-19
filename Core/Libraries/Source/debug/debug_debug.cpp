@@ -287,7 +287,10 @@ static LONG WINAPI LocalVectoredExceptionHandler(struct _EXCEPTION_POINTERS *pEx
 void Debug::InstallExceptionHandler()
 {
 #if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable: 4535)  // _set_se_translator() requires /EHa; intentional use
   _set_se_translator(LocalSETranslator);
+#pragma warning(pop)
 #elif defined(__GNUC__) && defined(_WIN32)
   // MinGW-w64 doesn't support _set_se_translator, use Vectored Exception Handler
   AddVectoredExceptionHandler(1, LocalVectoredExceptionHandler);
@@ -773,9 +776,9 @@ Debug& Debug::operator<<(const char *str)
   unsigned len=strlen(str);
 
   // forced width?
-  if (len<m_width)
+  if ((int)len<m_width)
   {
-    for (unsigned k=len;k<m_width;k++)
+    for (unsigned k=len;k<(unsigned)m_width;k++)
       AddOutput(&m_fillChar,1);
   }
 

@@ -52,6 +52,7 @@
 #include "Common/GameCommon.h"
 #include "Common/GameSounds.h"
 #include "Common/CRCDebug.h"
+#include "Common/Debug.h"
 #include "Common/GlobalData.h"
 #include "Common/ScopedMutex.h"
 
@@ -441,6 +442,16 @@ void MilesAudioManager::audioDebugDisplay(DebugDisplayInterface *dd, void *, FIL
 void MilesAudioManager::init()
 {
 	AudioManager::init();
+	DEBUG_LOG(("AUDIO: MilesAudioManager::init audioOn=%d digital=%d midi=%d output=%dHz/%dbit/%dch samples2D=%d samples3D=%d streams=%d",
+		TheGlobalData->m_audioOn,
+		getAudioSettings()->m_useDigital,
+		getAudioSettings()->m_useMidi,
+		getAudioSettings()->m_outputRate,
+		getAudioSettings()->m_outputBits,
+		getAudioSettings()->m_outputChannels,
+		getAudioSettings()->m_sampleCount2D,
+		getAudioSettings()->m_sampleCount3D,
+		getAudioSettings()->m_streamCount));
 #ifdef INTENSE_DEBUG
 	DEBUG_LOG(("Sound has temporarily been disabled in debug builds only. jkmcd"));
 	// for now, RTS_DEBUG builds only should have no sound. ask jkmcd or srj about this.
@@ -450,6 +461,13 @@ void MilesAudioManager::init()
 	// We should now know how many samples we want to load
 	openDevice();
 	m_audioCache->setMaxSize(getAudioSettings()->m_maxCacheSize);
+	DEBUG_LOG(("AUDIO: MilesAudioManager::init device=%p provider=%u/%u speaker=%u 2D=%u 3D=%u",
+		m_digitalHandle,
+		m_selectedProvider,
+		m_providerCount,
+		m_selectedSpeakerType,
+		m_num2DSamples,
+		m_num3DSamples));
 
 	// Now, set the file callbacks to load the streams from Biggie files
 	AIL_set_file_callbacks(streamingFileOpen, streamingFileClose, streamingFileSeek, streamingFileRead);
@@ -662,6 +680,7 @@ void MilesAudioManager::playAudioEvent( AudioEventRTS *event )
 #endif
 	const AudioEventInfo *info = event->getAudioEventInfo();
 	if (!info) {
+		DEBUG_LOG(("AUDIO: ERROR play request '%s' has no AudioEventInfo" , event->getEventName().str()));
 		return;
 	}
 
@@ -724,6 +743,9 @@ void MilesAudioManager::playAudioEvent( AudioEventRTS *event )
 				playStream(event, stream);
 				m_playingStreams.push_back(audio);
 				audio = nullptr;
+			} else {
+				DEBUG_LOG(("AUDIO: ERROR stream open failed event='%s' file='%s': '%s'" ,
+					event->getEventName().str(), fileToPlay.str(), AIL_last_error() ? AIL_last_error() : ""));
 			}
 			break;
 		}
@@ -794,6 +816,8 @@ void MilesAudioManager::playAudioEvent( AudioEventRTS *event )
 
 				if( !audio->m_file )
 				{
+					DEBUG_LOG(("AUDIO: ERROR 3D sample playback failed event='%s' file='%s': '%s'" ,
+						event->getEventName().str(), event->getFilename().str(), AIL_last_error() ? AIL_last_error() : ""));
 					m_playing3DSounds.pop_back();
 					#ifdef INTENSIVE_AUDIO_DEBUG
 						DEBUG_LOG((" Killed (no handles available)"));
@@ -864,6 +888,8 @@ void MilesAudioManager::playAudioEvent( AudioEventRTS *event )
 				}
 
 				if (!audio->m_file) {
+					DEBUG_LOG(("AUDIO: ERROR 2D sample playback failed event='%s' file='%s': '%s'" ,
+						event->getEventName().str(), event->getFilename().str(), AIL_last_error() ? AIL_last_error() : ""));
 					#ifdef INTENSIVE_AUDIO_DEBUG
 						DEBUG_LOG((" Killed (no handles available)"));
 					#endif
@@ -1430,9 +1456,11 @@ AsciiString MilesAudioManager::getMusicTrackName() const
 void MilesAudioManager::openDevice()
 {
 	if (!TheGlobalData->m_audioOn) {
+		DEBUG_LOG(("AUDIO: openDevice skipped because audio is disabled"));
 		return;
 	}
 
+	DEBUG_LOG(("AUDIO: openDevice starting; redist=MSS\\"));
 	AIL_set_redist_directory("MSS\\");
 	AIL_startup();
 	Int retval = 0;
@@ -1442,14 +1470,21 @@ void MilesAudioManager::openDevice()
 	m_selectedSpeakerType = TheAudio->translateSpeakerTypeToUnsignedInt(m_prefSpeaker);
 
 	retval = AIL_quick_startup(audioSettings->m_useDigital, audioSettings->m_useMidi, audioSettings->m_outputRate, audioSettings->m_outputBits, audioSettings->m_outputChannels);
+	if (retval) {
+		DEBUG_LOG(("AUDIO: AIL_quick_startup succeeded"));
+	} else {
+		DEBUG_LOG(("AUDIO: ERROR AIL_quick_startup failed: '%s'" , AIL_last_error() ? AIL_last_error() : ""));
+	}
 
 	// Quick handles tells us where to store the various devices. For now, we're only interested in the digital handle.
 	AIL_quick_handles(&m_digitalHandle, nullptr, nullptr);
+	DEBUG_LOG(("AUDIO: quick handles digital=%p" , m_digitalHandle));
 
-	if (retval) {
+	if (retval && m_digitalHandle) {
 		buildProviderList();
 	} else {
-		// if we couldn't initialize any devices, turn sound off (fail silently)
+		// If we couldn't initialize any devices, turn sound off.
+		DEBUG_LOG(("AUDIO: ERROR no usable digital audio device; startup=%d handle=%p; disabling all audio" , retval, m_digitalHandle));
 		setOn( false, AudioAffect_All );
 	}
 
@@ -1459,15 +1494,22 @@ void MilesAudioManager::openDevice()
 	TheAudio->refreshCachedVariables();
 
 	if (!isValidProvider()) {
+		DEBUG_LOG(("AUDIO: WARNING no valid 3D provider selected; providerCount=%u" , m_providerCount));
 		return;
 	}
 
 	initDelayFilter();
+	DEBUG_LOG(("AUDIO: openDevice complete provider='%s' speaker=%u listener=%p delayFilter=%p" ,
+		getProviderName(m_selectedProvider).str(),
+		m_selectedSpeakerType,
+		m_listener,
+		m_delayFilter));
 }
 
 //-------------------------------------------------------------------------------------------------
 void MilesAudioManager::closeDevice()
 {
+	DEBUG_LOG(("AUDIO: closeDevice provider=%u digital=%p" , m_selectedProvider, m_digitalHandle));
 	freeAllMilesHandles();
 	unselectProvider();
 	AIL_shutdown();
@@ -1648,6 +1690,7 @@ void MilesAudioManager::selectProvider( UnsignedInt providerNdx )
 {
 	if (!isOn(AudioAffect_Sound3D))
 	{
+		DEBUG_LOG(("AUDIO: selectProvider skipped because 3D sound is disabled"));
 		return;
 	}
 
@@ -1712,7 +1755,26 @@ void MilesAudioManager::selectProvider( UnsignedInt providerNdx )
 	{
 		providerNdx = getProviderIndex( "Miles Fast 2D Positional Audio" );
 	}
+
+	if (providerNdx >= m_providerCount) {
+		DEBUG_LOG(("AUDIO: WARNING resolved provider=%u is invalid; trying fallback; providerCount=%u" ,
+			providerNdx, m_providerCount));
+		providerNdx = getProviderIndex( "Miles Fast 2D Positional Audio" );
+		useDolby = FALSE;
+		if (providerNdx >= m_providerCount) {
+			DEBUG_LOG(("AUDIO: ERROR fallback provider 'Miles Fast 2D Positional Audio' was not enumerated"));
+			m_selectedProvider = PROVIDER_ERROR;
+			return;
+		}
+	}
+
+	DEBUG_LOG(("AUDIO: opening 3D provider index=%u name='%s' speaker=%u dolby=%d" ,
+		providerNdx, m_provider3D[providerNdx].name.str(), m_selectedSpeakerType, useDolby));
 	success = AIL_open_3D_provider( m_provider3D[providerNdx].id ) == 0;
+	if (!success) {
+		DEBUG_LOG(("AUDIO: ERROR AIL_open_3D_provider failed for '%s': '%s'" ,
+			m_provider3D[providerNdx].name.str(), AIL_last_error() ? AIL_last_error() : ""));
+	}
 
 	//if (providerNdx < m_providerCount)
 	//{
@@ -1726,7 +1788,15 @@ void MilesAudioManager::selectProvider( UnsignedInt providerNdx )
 		m_selectedProvider = PROVIDER_ERROR;
 		// try to select a failsafe
 		providerNdx = getProviderIndex( "Miles Fast 2D Positional Audio" );
-		success = AIL_open_3D_provider( m_provider3D[providerNdx].id ) == 0;
+		if (providerNdx < m_providerCount) {
+			success = AIL_open_3D_provider( m_provider3D[providerNdx].id ) == 0;
+			if (!success) {
+				DEBUG_LOG(("AUDIO: ERROR fallback provider failed for '%s': '%s'" ,
+					m_provider3D[providerNdx].name.str(), AIL_last_error() ? AIL_last_error() : ""));
+			}
+		} else {
+			DEBUG_LOG(("AUDIO: ERROR fallback provider 'Miles Fast 2D Positional Audio' was not enumerated"));
+		}
 	}
 
 	if ( success )
@@ -1741,6 +1811,10 @@ void MilesAudioManager::selectProvider( UnsignedInt providerNdx )
 		{
 			TheVideoPlayer->notifyVideoPlayerOfNewProvider(TRUE);
 		}
+		DEBUG_LOG(("AUDIO: 3D provider selected index=%u name='%s' listener=%p samples2D=%u samples3D=%u" ,
+			m_selectedProvider, m_provider3D[m_selectedProvider].name.str(), m_listener, m_num2DSamples, m_num3DSamples));
+	} else {
+		DEBUG_LOG(("AUDIO: ERROR no 3D provider could be opened"));
 	}
 }
 
@@ -2855,6 +2929,10 @@ void MilesAudioManager::buildProviderList()
 	 }
 
 	 m_providerCount = index;
+	DEBUG_LOG(("AUDIO: enumerated %u 3D providers" , m_providerCount));
+	for (UnsignedInt i = 0; i < m_providerCount; ++i) {
+		DEBUG_LOG(("AUDIO: provider[%u]='%s'" , i, m_provider3D[i].name.str()));
+	}
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -2865,6 +2943,10 @@ void MilesAudioManager::createListener()
 	}
 
 	m_listener = AIL_open_3D_listener(m_provider3D[m_selectedProvider].id);
+	DEBUG_LOG(("AUDIO: AIL_open_3D_listener returned %p" , m_listener));
+	if (!m_listener) {
+		DEBUG_LOG(("AUDIO: ERROR listener creation failed: '%s'" , AIL_last_error() ? AIL_last_error() : ""));
+	}
 	// initial listener position will be (0, 0, 0)
 }
 
@@ -2924,6 +3006,10 @@ void MilesAudioManager::initSamplePools()
 
 	// Streams are basically free, so we can just allocate the appropriate number
 	m_numStreams = getAudioSettings()->m_streamCount;
+	DEBUG_LOG(("AUDIO: sample pools initialized 2D=%u/%d 3D=%u/%d streams=%u" ,
+		m_num2DSamples, getAudioSettings()->m_sampleCount2D,
+		m_num3DSamples, getAudioSettings()->m_sampleCount3D,
+		m_numStreams));
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -70,7 +70,7 @@ Common keywords: `@bugfix`, `@feature`, `@performance`, `@refactor`, `@tweak`, `
 ### Replay Compatibility Testing
 Located in `GeneralsReplays/` - critical for ensuring retail compatibility:
 ```bash
-generalszh.exe -jobs 4 -headless -replay subfolder/*.rep
+generalszh-custom.exe -jobs 4 -headless -replay subfolder/*.rep
 ```
 - Requires VC6 optimized build with RTS_BUILD_OPTION_DEBUG=OFF
 - Copies replays to `%USERPROFILE%/Documents/Command and Conquer Generals Zero Hour Data/Replays`

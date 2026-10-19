@@ -65,6 +65,15 @@ void Win32BIGFileSystem::init() {
     // load original Generals assets
     AsciiString installPath;
     GetStringFromGeneralsRegistry("", "InstallPath", installPath );
+    // Portable/Steam layouts may bundle the original assets below the current
+    // directory without the legacy EA registry key. The recursive load above
+    // has already loaded those archives; do not load them twice or assert.
+    if (installPath.isEmpty() &&
+        TheLocalFileSystem->doesFileExist("ZH_Generals\\INI.big") &&
+        TheLocalFileSystem->doesFileExist("ZH_Generals\\W3D.big")) {
+      DEBUG_LOG(("Win32BIGFileSystem: using bundled ZH_Generals assets; no legacy InstallPath is required.\n"));
+      return;
+    }
     //@todo this will need to be ramped up to a crash for release
     DEBUG_ASSERTCRASH(!installPath.isEmpty(), ("Be 1337! Go install Generals!"));
     if (!installPath.isEmpty())

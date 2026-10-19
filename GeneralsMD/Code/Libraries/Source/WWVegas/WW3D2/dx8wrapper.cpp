@@ -87,6 +87,51 @@
 
 #include "shdlib.h"
 
+#include <cstdio>
+#include <cstdarg>
+
+namespace {
+bool FullscreenEnvironmentFlag(const char *name)
+{
+	char value[8] = {};
+	return GetEnvironmentVariableA(name, value, sizeof(value)) == 1 && value[0] == '1';
+}
+
+bool FullscreenDiagnosticEnabled()
+{
+	static const bool enabled = FullscreenEnvironmentFlag("GENZH_FULLSCREEN_DIAG");
+	return enabled;
+}
+
+// Opt-in, low-volume diagnostics. CREATE_NEW preserves all earlier log files.
+void FullscreenDiagnosticLog(const char *format, ...)
+{
+	if (!FullscreenDiagnosticEnabled()) return;
+	struct LogFile {
+		HANDLE file;
+		LogFile() : file(INVALID_HANDLE_VALUE)
+		{
+			char path[MAX_PATH];
+			std::snprintf(path, sizeof(path), "FullscreenDiagnostic-%lu-%lu.log",
+				GetCurrentProcessId(), GetTickCount());
+			file = CreateFileA(path, GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_NEW,
+				FILE_ATTRIBUTE_NORMAL, nullptr);
+		}
+		~LogFile() { if (file != INVALID_HANDLE_VALUE) CloseHandle(file); }
+	};
+	static LogFile log;
+	if (log.file == INVALID_HANDLE_VALUE) return;
+	char line[768];
+	va_list args;
+	va_start(args, format);
+	const int length = std::vsnprintf(line, sizeof(line), format, args);
+	va_end(args);
+	if (length <= 0) return;
+	DWORD written = 0;
+	WriteFile(log.file, line, static_cast<DWORD>(length < sizeof(line) ? length : sizeof(line) - 1), &written, nullptr);
+}
+}
+
 const int DEFAULT_RESOLUTION_WIDTH = 640;
 const int DEFAULT_RESOLUTION_HEIGHT = 480;
 const int DEFAULT_BIT_DEPTH = 32;
@@ -602,6 +647,11 @@ bool DX8Wrapper::Create_Device()
 		&_PresentParameters,
 		&D3DDevice
 	);
+	FullscreenDiagnosticLog("CreateDevice hr=0x%08lx windowed=%d size=%ux%u format=%u buffers=%u refresh=%u interval=0x%08x\r\n",
+		static_cast<unsigned long>(hr), _PresentParameters.Windowed,
+		_PresentParameters.BackBufferWidth, _PresentParameters.BackBufferHeight,
+		_PresentParameters.BackBufferFormat, _PresentParameters.BackBufferCount,
+		_PresentParameters.FullScreen_RefreshRateInHz, _PresentParameters.FullScreen_PresentationInterval);
 
 	if (FAILED(hr))
 	{
@@ -648,6 +698,8 @@ bool DX8Wrapper::Create_Device()
 
 bool DX8Wrapper::Reset_Device(bool reload_assets)
 {
+	FullscreenDiagnosticLog("Reset_Device tick=%lu format=%u reload=%d\r\n",
+		GetTickCount(), _PresentParameters.BackBufferFormat, reload_assets);
 	WWDEBUG_SAY(("Resetting device."));
 	DX8_THREAD_ASSERT();
 	if ((IsInitted) && (D3DDevice != nullptr)) {
@@ -676,6 +728,7 @@ bool DX8Wrapper::Reset_Device(bool reload_assets)
 		HRESULT hr=_Get_D3D_Device8()->TestCooperativeLevel();
 		if (hr != D3DERR_DEVICELOST )
 		{	DX8CALL_HRES(Reset(&_PresentParameters),hr)
+			FullscreenDiagnosticLog("Reset result=0x%08lx\r\n", static_cast<unsigned long>(hr));
 			if (hr != D3D_OK)
 				return false;	//reset failed.
 		}
@@ -1096,6 +1149,25 @@ bool DX8Wrapper::Set_Render_Device(int dev, int width, int height, int bits, int
 		*/
 		Find_Color_And_Z_Mode(ResolutionWidth,ResolutionHeight,BitDepth,&DisplayFormat,
 			&_PresentParameters.BackBufferFormat,&_PresentParameters.AutoDepthStencilFormat);
+
+		// Some modern display stacks advertise fullscreen destination-alpha support
+		// but repeatedly lose an A8R8G8B8 device immediately after Present. Prefer
+		// the verified XRGB path for all 32-bit fullscreen devices that support it.
+		// Texture alpha is unchanged; the backbuffer has no destination alpha.
+		if (BitDepth == 32) {
+			D3DFORMAT depthFormat = D3DFMT_UNKNOWN;
+			const HRESULT supported = D3DInterface->CheckDeviceType(CurRenderDevice,
+				WW3D_DEVTYPE, DisplayFormat, D3DFMT_X8R8G8B8, FALSE);
+			if (SUCCEEDED(supported) && Find_Z_Mode(DisplayFormat, D3DFMT_X8R8G8B8, &depthFormat)) {
+				FullscreenDiagnosticLog("GENZH_FULLSCREEN_XRGB_DEFAULT_V2 selecting X8R8G8B8 instead of format=%u, depth=%u\r\n",
+					_PresentParameters.BackBufferFormat, depthFormat);
+				_PresentParameters.BackBufferFormat = D3DFMT_X8R8G8B8;
+				_PresentParameters.AutoDepthStencilFormat = depthFormat;
+			} else {
+				FullscreenDiagnosticLog("GENZH_FULLSCREEN_XRGB_DEFAULT_V2 XRGB unavailable hr=0x%08lx depth=%u; retaining format=%u\r\n",
+					static_cast<unsigned long>(supported), depthFormat, _PresentParameters.BackBufferFormat);
+			}
+		}
 	}
 
 	/*
@@ -1736,6 +1808,21 @@ void DX8Wrapper::End_Scene(bool flip_frames)
 		{
 			WWPROFILE("DX8Device::Present()");
 			hr=_Get_D3D_Device8()->Present(nullptr, nullptr, nullptr, nullptr);
+		}
+		if (FullscreenDiagnosticEnabled()) {
+			static DWORD previousTick = GetTickCount();
+			static unsigned int successfulPresents = 0;
+			static unsigned int failedPresents = 0;
+			if (SUCCEEDED(hr)) ++successfulPresents; else ++failedPresents;
+			const DWORD tick = GetTickCount();
+			const DWORD elapsed = tick - previousTick;
+			if (elapsed >= 1000) {
+				FullscreenDiagnosticLog("Present interval_ms=%lu success=%u failed=%u success_fps=%.2f last_hr=0x%08lx format=%u windowed=%d\r\n",
+					elapsed, successfulPresents, failedPresents, successfulPresents * 1000.0 / elapsed,
+					static_cast<unsigned long>(hr), _PresentParameters.BackBufferFormat, _PresentParameters.Windowed);
+				previousTick = tick;
+				successfulPresents = failedPresents = 0;
+			}
 		}
 
 		number_of_DX8_calls++;

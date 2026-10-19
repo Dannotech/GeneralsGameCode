@@ -179,7 +179,7 @@ check_build() {
         exit 1
     fi
 
-    if [ ! -f "$BUILD_DIR/GeneralsMD/generalszh.exe" ]; then
+    if [ ! -f "$BUILD_DIR/GeneralsMD/generalszh-custom.exe" ]; then
         print_error "Built executables not found"
         echo ""
         echo "Please build the project first:"
@@ -226,7 +226,7 @@ install_game() {
 
     if [ "$game_type" == "zh" ]; then
         build_game_dir="$BUILD_DIR/GeneralsMD"
-        exe_name="generalszh.exe"
+        exe_name="generalszh-custom.exe"
         tools_prefix="ZH"
     else
         build_game_dir="$BUILD_DIR/Generals"
@@ -353,7 +353,7 @@ if [ ! -d "$GAME_DIR/Data" ]; then
     echo "Expected directory structure:"
     echo "  $GAME_DIR/"
     echo "    Data/"
-    echo "      generalszh.exe"
+    echo "      generalszh-custom.exe"
     echo "      *.big files"
     exit 1
 fi
@@ -395,9 +395,9 @@ if [ "$DRY_RUN" != "true" ]; then
     echo ""
     echo "To run the game:"
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        echo "  wine \"$GAME_DIR/Data/generalszh.exe\""
+        echo "  wine \"$GAME_DIR/Data/generalszh-custom.exe\""
     else
-        echo "  cd \"$GAME_DIR/Data\" && generalszh.exe"
+        echo "  cd \"$GAME_DIR/Data\" && generalszh-custom.exe"
     fi
     echo ""
     echo "To restore original files:"

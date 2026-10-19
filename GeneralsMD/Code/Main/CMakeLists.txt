@@ -1,11 +1,7 @@
 add_executable(z_generals WIN32)
 
-# Use a binary name that doesn't conflict with original game.
-if("${CMAKE_SYSTEM}" MATCHES "Windows")
-    set_target_properties(z_generals PROPERTIES OUTPUT_NAME "generalszh${RTS_BUILD_OUTPUT_SUFFIX}")
-else()
-    set_target_properties(z_generals PROPERTIES OUTPUT_NAME "generalszh${RTS_BUILD_OUTPUT_SUFFIX}")
-endif()
+# Stable name for this fork's family-play builds, separate from the retail game.
+set_target_properties(z_generals PROPERTIES OUTPUT_NAME "generalszh-custom${RTS_BUILD_OUTPUT_SUFFIX}")
 
 target_link_libraries(z_generals PRIVATE
     binkstub
@@ -76,7 +72,7 @@ if(MSVC)
 endif()
 
 # Strip debug symbols to separate file for MinGW Release builds
-# This creates generalszh${RTS_BUILD_OUTPUT_SUFFIX}.exe.debug (similar to MSVC .pdb files)
+# This creates generalszh-custom${RTS_BUILD_OUTPUT_SUFFIX}.exe.debug (similar to MSVC .pdb files)
 if(MINGW AND COMMAND add_debug_strip_target)
     add_debug_strip_target(z_generals)
 endif()

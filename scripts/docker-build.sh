@@ -76,7 +76,7 @@ Output:
     Build artifacts are placed in: $BUILD_DIR/
 
     Zero Hour executables:
-        - generalszh.exe       (Main game)
+        - generalszh-custom.exe (Main game)
         - WorldBuilderZH.exe   (Map editor)
         - W3DViewZH.exe        (3D model viewer)
 
@@ -87,7 +87,7 @@ Output:
 
 Running the game:
     After building, you can run the game with Wine:
-        wine $BUILD_DIR/GeneralsMD/generalszh.exe
+        wine $BUILD_DIR/GeneralsMD/generalszh-custom.exe
 
     Note: You need the original game data files installed.
 EOF
@@ -282,5 +282,5 @@ if [[ "$INTERACTIVE" != "true" ]]; then
 
     echo ""
     print_info "To run the game with Wine:"
-    echo "    wine $BUILD_DIR/GeneralsMD/generalszh.exe"
+    echo "    wine $BUILD_DIR/GeneralsMD/generalszh-custom.exe"
 fi
